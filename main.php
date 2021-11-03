@@ -19,3 +19,12 @@ $db = new Illuminate\Database\Capsule\Manager();
 $db->addConnection($config);
 $db->setAsGlobal();
 $db->bootEloquent();
+
+$router = new \mf\router\Router();
+$router->addRoute('sendCoord', '/sendCoord/', '\lehangar\control\HangarController', 'sendCoord');
+
+$router->setDefaultRoute('/home/');
+
+$router->run();
+
+
