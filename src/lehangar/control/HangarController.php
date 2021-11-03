@@ -1,6 +1,7 @@
 <?php
 
-namespace lehangar\controller;
+namespace lehangar\control;
+
 
 use lehangar\model\Produit;
 use lehangar\model\Producteur;
@@ -15,9 +16,17 @@ class HangarController extends AbstractController
         parent::__construct();
     }
 
+
     public function viewProduit(){
         $produits = Produit::select()->get();
         $view = new HangarView($produits);
         $view->render('produit');
+    }
+  
+    public function viewProd(){
+        $prod = Producteur::get();
+        $view = new HangarView($prod);
+        $view->render('producteur');
+
     }
 }
