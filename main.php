@@ -26,5 +26,5 @@ $r = new \mf\router\Router();
 $r->addRoute('accueil', '/accueil/', '\lehangar\control\HangarController', 'viewProduit', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('producteurs', '/producteurs/', '\lehangar\control\HangarController', 'viewProd', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('sendCoord', '/sendCoord/', '\lehangar\control\HangarController', 'sendCoord', Authentification::ACCESS_LEVEL_NONE);
-$r->setDefaultRoute('/home/');
+$r->setDefaultRoute('/accueil/');
 $r->run();
