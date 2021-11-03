@@ -2,6 +2,9 @@
 
 namespace lehangar\view;
 
+use lehangar\model\Categorie;
+use lehangar\model\Producteur;
+
 class HangarView extends \mf\view\AbstractView
 {
     public function __construct($data)
@@ -29,8 +32,42 @@ class HangarView extends \mf\view\AbstractView
             case 'coord';
                 $html .= $this->renderCoord();
                 break;
+            case 'view';
+                $html .= $this->renderView();
+                break;
         }
         return $html;
+    }
+
+    private function renderView(){
+        $res = $this->data;
+        $categorie = Categorie::where('id','=',$res->categorie_id)->first();
+        $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
+        $html = "<div>
+                    <div>
+                        <img src='https://www.breakingnews.fr/wp-content/uploads/2020/08/pommes-de-terre-crues.jpg'>
+                        <p>$res->description</p>
+                    </div>
+                    <div>
+                        <p>Produit : $res->nom</p>
+                        <p>Type : $categorie->nom</p>
+                        <p>Prix : $res->tarif_unitaire</p>
+                        <p>Producteur : $producteur->nom</p>
+                    </div>
+                    <form action='../AjouterPanier/' method='post'>
+                                    <input type='hidden' name='produit' value='$res'>
+                                    <select name='quantite'>
+                                        <option value=''>--Please choose an option--</option>";
+
+        for ($i = 0; $i < 21; $i++){
+            $html .= "<option value='$i'>$i</option>";
+        }
+        $html .= "</select>
+                                        <input type='submit' value='Ajouter au panier'>
+                                    </form>
+                 </div>";
+        return $html;
+
     }
   
     private function renderCoord(){
