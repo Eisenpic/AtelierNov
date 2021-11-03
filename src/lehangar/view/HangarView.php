@@ -9,10 +9,6 @@ class HangarView extends \mf\view\AbstractView
         parent::__construct($data);
     }
 
-    public function __construct( $data ){
-        parent::__construct($data);
-    }
-
     protected function renderBody($selector)
     {
         /**
