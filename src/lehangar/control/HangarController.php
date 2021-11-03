@@ -3,6 +3,7 @@
 namespace lehangar\control;
 
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use lehangar\model\Produit;
 use lehangar\model\Producteur;
 use lehangar\model\Categorie;
@@ -30,8 +31,8 @@ class HangarController extends AbstractController
 
         //Calculer le montant total
         
-        $montant;
-        $quantite;
+        $montant = 0;
+        $quantite = 0;
         foreach($_SESSION['cart'] as $cart) {
             $montant += $cart[2];
             $quantite += $cart;
@@ -78,5 +79,16 @@ class HangarController extends AbstractController
             $prixLot = $produit->tarif_unitaire * $quantite;
             array_push($_SESSION['cart'], [$produit, $quantite, $prixLot]);
         }
+    }
+
+    public function viewArticle(){
+        try {
+            $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
+            $view = new HangarView($res);
+            $view->render('view');
+        } catch (ModelNotFoundException $e) {
+            echo "Incorrect product number";
+        }
+
     }
 }
