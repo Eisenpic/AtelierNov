@@ -4,6 +4,10 @@ namespace lehangar\view;
 
 class HangarView extends \mf\view\AbstractView
 {
+    public function __construct($data)
+    {
+        parent::__construct($data);
+    }
 
     public function __construct( $data ){
         parent::__construct($data);
@@ -15,12 +19,16 @@ class HangarView extends \mf\view\AbstractView
          * Switch pour le choix du render.
          */
         $html = $this->renderHeader();
+
         switch ($selector){
             case 'home':
                 $html .= $this->renderHome();
                 break;
             case 'cart':
                 $html .= $this->renderCart();
+                break;
+            case 'produit';
+                $html .= $this->renderProduit();
                 break;
         }
         return $html;
@@ -93,6 +101,46 @@ class HangarView extends \mf\view\AbstractView
                     <div>
                         <p>Total: $prixTotal €</p>
                         <a href='#'>Valider</a>
+                    </div>
+                </div>
+            </section>
+        ";
+
+        return $html;
+    }
+  
+   private function renderProduit()
+    {
+        $html = "
+            <section>
+                <div>
+                    <div> <!-- div avec overflow: scroll -->
+                        ";
+
+        foreach ($this->data as $produit) {
+            $html .= "
+                            <div>
+                                <div>
+                                    <p>$produit->nom</p>
+                                    <p>$produit->prix €</p>
+                                    <p>$produit->producteur->nom</p>
+                                    <form action='../AjouterPanier/' method='post'>
+                                    <input type='hidden' name='produit' value='$produit'>
+                                    <select name='quantite'>
+                                        <option value=''>--Please choose an option--</option>";
+
+            for ($i = 0; $i < 21; $i++){
+                $html .= "<option value='$i'>$i</option>";
+            }
+            $html .= "</select>
+                                        <input type='submit' value='Ajouter au panier'>
+                                    </form>
+                                </div>
+                            </div>
+                        ";
+        }
+
+        $html .= "
                     </div>
                 </div>
             </section>

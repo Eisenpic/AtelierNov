@@ -13,4 +13,13 @@ class Produit extends Model {
     public function commandes(){
         return $this->belongsToMany(Commande::class, 'contenu', 'prod_id' , 'commande_id')->withPivot("quantite");
     }
+
+    public function producteur(){
+        return $this->belongsTo('lehangar\model\Producteur', 'prod_id');
+    }
+
+    public function categorie(){
+        return $this->belongsTo('lehangar\model\Categorie', 'categorie_id');
+    }
+
 }
