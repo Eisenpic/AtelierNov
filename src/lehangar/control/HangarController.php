@@ -1,10 +1,16 @@
 <?php
 
-namespace lehangar\controller;
+namespace lehangar\control;
 
+
+use lehangar\model\Produit;
+use lehangar\model\Producteur;
+use lehangar\model\Categorie;
+use lehangar\view\HangarView;
 use mf\control\AbstractController;
 use lehangar\model\Commande;
 use lehangar\model\Contenu;
+use mf\router\Router;
 
 class HangarController extends AbstractController
 {
@@ -49,6 +55,28 @@ class HangarController extends AbstractController
             header('Location: home/');
         }
         */
-        header('Location: home/');
+        header('Location: /home/');
+    }
+
+    public function viewProduit(){
+        $produits = Produit::select()->get();
+        $view = new HangarView($produits);
+        $view->render('produit');
+    }
+  
+    public function viewProd(){
+        $prod = Producteur::get();
+        $view = new HangarView($prod);
+        $view->render('producteur');
+
+    }
+
+    public function addToCart(){
+        $quantite = filter_var($_POST['quantite'], FILTER_VALIDATE_INT);
+        $produit = $_POST['produit'];
+        if (isset($quantite)){
+            $prixLot = $produit->tarif_unitaire * $quantite;
+            array_push($_SESSION['cart'], [$produit, $quantite, $prixLot]);
+        }
     }
 }
