@@ -17,8 +17,8 @@ class HangarView extends \mf\view\AbstractView
         $html = $this->renderHeader();
 
         switch ($selector){
-            case 'home':
-                $html .= $this->renderHome();
+            case 'producteur':
+                $html .= $this->renderProducteur();
                 break;
             case 'cart':
                 $html .= $this->renderCart();
@@ -45,6 +45,8 @@ class HangarView extends \mf\view\AbstractView
                       </section>';
         }
         $html .= '</div>';
+
+        return $html;
     }
     
     protected function renderHeader(){
@@ -72,8 +74,7 @@ class HangarView extends \mf\view\AbstractView
                         ";
 
                     foreach ($this->data as $article){
-                        $prixArticle = $article->prix * $article->quantite;
-                        $prixTotal += $prixArticle;
+                        $prixTotal += $article[2];
                         $html .= "
                             <div>
                                 <div>
@@ -85,7 +86,7 @@ class HangarView extends \mf\view\AbstractView
                                     <p>Producteur : $article->nom</p>
                                 </div>
                                 <div>
-                                    <p>Total: $prixArticle</p>
+                                    <p>Total: $article[2]</p>
                                 </div>
                             </div>
                         ";
