@@ -39,6 +39,8 @@ class HangarView extends \mf\view\AbstractView
                 $html .= $this->renderView();
                 break;
         }
+
+        $html .= $this->renderFooter();
         return $html;
     }
 
@@ -48,9 +50,11 @@ class HangarView extends \mf\view\AbstractView
         $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
         $http_req = new HttpRequest();
         foreach ($this->data as $produit) {
-            $html = "<div>
+            $html = "<section>
                     <div>
-                        <img src='$http_req->root/html/img/$produit->img'>
+                        <div>
+                        <img src='$http_req->root/html/img/$res->img'>
+                        </div>
                         <p>$res->description</p>
                     </div>
                     <div>
@@ -59,18 +63,20 @@ class HangarView extends \mf\view\AbstractView
                         <p>Prix : $res->tarif_unitaire</p>
                         <p>Producteur : $producteur->nom</p>
                     </div>
+                    <div>
                     <form action='../AjouterPanier/' method='post'>
                                     <input type='hidden' name='produit' value='$res'>
                                     <select name='quantite'>
-                                        <option value=''>--Please choose an option--</option>";
+                                        <option value=''>0</option>";
 
-            for ($i = 0; $i < 21; $i++) {
+            for ($i = 1; $i < 21; $i++) {
                 $html .= "<option value='$i'>$i</option>";
             }
             $html .= "</select>
                                         <input type='submit' value='Ajouter au panier'>
                                     </form>
-                 </div>";
+                                </div>
+                 </section>";
             return $html;
         }
     }
@@ -216,5 +222,17 @@ class HangarView extends \mf\view\AbstractView
         ";
 
         return $html;
+    }
+
+    protected function renderFooter()
+    {
+        $http_req = new HttpRequest();
+        return "
+            <footer>
+                <div>
+                    <img src='$http_req->root/html/img/wave.svg'>
+                </div>        
+            </footer>
+        ";
     }
 }

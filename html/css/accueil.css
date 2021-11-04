@@ -323,6 +323,9 @@ header {
     display: flex;
     justify-content: space-between; }
 
+footer {
+  background-color: white; }
+
 body {
   background-color: #90c418; }
 
