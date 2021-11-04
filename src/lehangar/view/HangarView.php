@@ -35,6 +35,9 @@ class HangarView extends \mf\view\AbstractView
             case 'coord';
                 $html .= $this->renderCoord();
                 break;
+            case 'confirm';
+                $html .= $this->renderConfirm();
+                break;
             case 'view';
                 $html .= $this->renderView();
                 break;
@@ -63,8 +66,10 @@ class HangarView extends \mf\view\AbstractView
                         <p>Prix : $res->tarif_unitaire</p>
                         <p>Producteur : $producteur->nom</p>
                     </div>
+
                     <div>
                     <form action='../AjouterPanier/' method='post'>
+
                                     <input type='hidden' name='produit' value='$res'>
                                     <select name='quantite'>
                                         <option value=''>0</option>";
@@ -80,25 +85,7 @@ class HangarView extends \mf\view\AbstractView
             return $html;
         }
     }
-  
-    private function renderCoord(){
-        return "<div>
-                    <h2>Vos coordonnées ☎️ :</h2>
-                    <div>
-                        <form action='../sendCoord/' method='post'>
-                                Prénom :<input type='text' name='prenom' required>
-                                Nom :<input type='text' name='nom' required>
-                                <br />
-                                Téléphone :<input type='number' name='tel' required>
-                                <br />
-                                Mail :<input type='email' name='email' required>
-                                <br />
-                            <p>⚠️ Le paiement s'effectue lors du retrait de la commande</p>                    
-                            <button type='submit'>Valider</button>
-                        </form>
-                    </div>
-                </div>";
-    }
+
     private function renderProducteur(){
         $html = '<section>
                     <div>
@@ -137,7 +124,7 @@ class HangarView extends \mf\view\AbstractView
 
     protected function renderCart(){
         $prixTotal = 0;
-
+        $r = new Router();
         $html = "
             <section>
                 <h2>Votre panier 🛒:</h2>
@@ -145,27 +132,30 @@ class HangarView extends \mf\view\AbstractView
                     <div> <!-- div avec overflow: scroll -->
                         ";
 
-                    foreach ($this->data as $article){
-                        $prixTotal += $article[2];
+                    foreach ($this->data as $key => $article){
+                        $prixTotal += $article['prixLot'];
 
                         $html .= "
                             <div>
                                 <div>
-                                    <p>Quantité: $article[1]</p>
+                                    <p>Quantité: ". $article['quantite'] ."</p>
                                 </div>
                                 <div>
-                                    <p>Produit : ". $article[0]->nom ."</p>
-                                    <p>Prix : ".$article[0]->tarif_unitaire."</p>
-                                    <p>Producteur : ".$article[0]->producteur->nom."</p>
+                                    <p>Produit : ". $article['produit']->nom ."</p>
+                                    <p>Prix : ".$article['produit']->tarif_unitaire."</p>
+                                    <p>Producteur : ".$article['produit']->producteur->nom."</p>
                                 </div>
                                 <div>
-                                    <p>Total: $article[2]</p>
+                                    <p>Total: ". $article['prixLot'] ."</p>
+                                    <p>$key</p>
+                                    <a href='". $r->urlFor('supprPanier', ['id' => $key]) ."'>Supprimer</a>
                                 </div>
                             </div>
                         ";
-                    }
+                        }
 
-        $html .="
+
+                        $html .= "
                     </div>
                     
                     <div>
@@ -177,6 +167,34 @@ class HangarView extends \mf\view\AbstractView
         ";
 
         return $html;
+    }
+
+    private function renderCoord(){
+        $html = "<div>
+                    <h2>Vos coordonnées ☎️ :</h2>
+                    <div>
+                        <form action='../sendCoord/' method='post'>
+                                Nom :<input type='text' name='nom' required>
+                                <br />
+                                Téléphone :<input type='number' name='tel' required>
+                                <br />
+                                Mail :<input type='email' name='email' required>
+                                <br />
+                            <p>⚠️ Le paiement s'effectue lors du retrait de la commande</p>                    
+                            <button type='submit'>Valider</button>
+                        </form>
+                    </div>
+                </div>";
+        return $html;
+    }
+
+    private function renderConfirm(){
+        $html = "
+            <div>
+                <p>Votre commande a bien été enregistrée.</p>
+                <p>Vous allez être automatiquement redirigé vers l'accueil.</p>
+            </div>
+            ".header( 'Refresh:5; url=../accueil/', true, 303);
     }
   
    private function renderProduit()
@@ -224,6 +242,7 @@ class HangarView extends \mf\view\AbstractView
         return $html;
     }
 
+
     protected function renderFooter()
     {
         $http_req = new HttpRequest();
@@ -235,4 +254,6 @@ class HangarView extends \mf\view\AbstractView
             </footer>
         ";
     }
+}
+
 }
