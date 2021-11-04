@@ -177,14 +177,14 @@ class HangarView extends \mf\view\AbstractView
                             <div>
                                 <div>
                                     <p>$produit->nom</p>
-                                    <p>$produit->prix €</p>
-                                    <p>$produit->producteur->nom</p>
+                                    <p>$produit->tarif_unitaire €</p>
+                                    <p>" . $produit->producteur->nom ."</p>
                                     <form action='../AjouterPanier/' method='post'>
                                     <input type='hidden' name='produit' value='$produit'>
                                     <select name='quantite'>
-                                        <option value=''>--Please choose an option--</option>";
+                                        <option value=''> 0 </option>";
 
-            for ($i = 0; $i < 21; $i++){
+            for ($i = 1; $i < 21; $i++){
                 $html .= "<option value='$i'>$i</option>";
             }
             $html .= "</select>
