@@ -4,6 +4,7 @@ namespace lehangar\view;
 
 use lehangar\model\Categorie;
 use lehangar\model\Producteur;
+use mf\router\Router;
 
 class HangarView extends \mf\view\AbstractView
 {
@@ -114,9 +115,9 @@ class HangarView extends \mf\view\AbstractView
                     <h1>LeHangar.local 🥕</h1>
                 </div>
                 <nav>
-                    <a href='#'>Accueil</a>
-                    <a href='#'>Producteurs</a>
-                    <a href='#'>Panier</a>
+                    <a href='../accueil/'>Accueil</a>
+                    <a href='../producteurs/'>Producteurs</a>
+                    <a href='../panier/'>Panier</a>
                 </nav>
             </header>
         ";
@@ -124,6 +125,7 @@ class HangarView extends \mf\view\AbstractView
 
     protected function renderCart(){
         $prixTotal = 0;
+
         $html = "
             <section>
                 <h2>Votre panier 🛒:</h2>
@@ -133,15 +135,16 @@ class HangarView extends \mf\view\AbstractView
 
                     foreach ($this->data as $article){
                         $prixTotal += $article[2];
+
                         $html .= "
                             <div>
                                 <div>
-                                    <p>Quantité: $article->quantite</p>
+                                    <p>Quantité: $article[1]</p>
                                 </div>
                                 <div>
-                                    <p>Produit : $article->nom</p>
-                                    <p>Prix : $article->prix</p>
-                                    <p>Producteur : $article->nom</p>
+                                    <p>Produit : ". $article[0]->nom ."</p>
+                                    <p>Prix : ".$article[0]->tarif_unitaire."</p>
+                                    <p>Producteur : ".$article[0]->producteur->nom."</p>
                                 </div>
                                 <div>
                                     <p>Total: $article[2]</p>
@@ -155,7 +158,7 @@ class HangarView extends \mf\view\AbstractView
                     
                     <div>
                         <p>Total: $prixTotal €</p>
-                        <a href='#'>Valider</a>
+                        <a href=../coord/>Valider</a>
                     </div>
                 </div>
             </section>
@@ -171,7 +174,7 @@ class HangarView extends \mf\view\AbstractView
                 <div>
                     <div> <!-- div avec overflow: scroll -->
                         ";
-
+        $r = new Router();
         foreach ($this->data as $produit) {
             $html .= "
                             <div>
@@ -179,8 +182,8 @@ class HangarView extends \mf\view\AbstractView
                                     <p>$produit->nom</p>
                                     <p>$produit->prix €</p>
                                     <p>$produit->producteur->nom</p>
-                                    <form action='../AjouterPanier/' method='post'>
-                                    <input type='hidden' name='produit' value='$produit'>
+                                    <form action='". $r->urlFor('ajouterPanier') ."' method='post'>
+                                    <input type='hidden' name='produit' value='$produit->id'>
                                     <select name='quantite'>
                                         <option value=''>--Please choose an option--</option>";
 
