@@ -62,7 +62,7 @@ class HangarView extends \mf\view\AbstractView
                         <p>Prix : $res->tarif_unitaire</p>
                         <p>Producteur : $producteur->nom</p>
                     </div>
-                    <form action='../AjouterPanier/' method='post'>
+                    <form action='../ajouterPanier/' method='post'>
                                     <input type='hidden' name='produit' value='$res'>
                                     <select name='quantite'>
                                         <option value=''>--Please choose an option--</option>";
