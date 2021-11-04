@@ -30,13 +30,14 @@ class HangarController extends AbstractController
         try {
             $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
             $view = new HangarView($res);
+            $view->addStyleSheet('/html/css/article.css');
             $view->render('view');
         } catch (ModelNotFoundException $e) {
             echo "Incorrect product number";
         }
 
     }
-  
+
     public function viewProd(){
         $prod = Producteur::get();
         $view = new HangarView($prod);
@@ -90,17 +91,6 @@ class HangarController extends AbstractController
         $view->render('coord');
     }
 
-
-    public function viewArticle(){
-        try {
-            $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
-            $view = new HangarView($res);
-            $view->addStyleSheet('/html/css/article.css');
-            $view->render('view');
-        } catch (ModelNotFoundException $e) {
-            echo "Incorrect product number";
-        }
-    }
     public function viewConfirm(){
         $view = new HangarView("");
         $view->render('confirm');

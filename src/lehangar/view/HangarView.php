@@ -255,5 +255,3 @@ class HangarView extends \mf\view\AbstractView
         ";
     }
 }
-
-}
