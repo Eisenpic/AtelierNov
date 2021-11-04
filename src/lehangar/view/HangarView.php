@@ -46,9 +46,11 @@ class HangarView extends \mf\view\AbstractView
         $res = $this->data;
         $categorie = Categorie::where('id','=',$res->categorie_id)->first();
         $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
-        $html = "<div>
+        $http_req = new HttpRequest();
+        foreach ($this->data as $produit) {
+            $html = "<div>
                     <div>
-                        <img src='https://www.breakingnews.fr/wp-content/uploads/2020/08/pommes-de-terre-crues.jpg'>
+                        <img src='$http_req->root/html/img/$produit->img'>
                         <p>$res->description</p>
                     </div>
                     <div>
@@ -62,15 +64,15 @@ class HangarView extends \mf\view\AbstractView
                                     <select name='quantite'>
                                         <option value=''>--Please choose an option--</option>";
 
-        for ($i = 0; $i < 21; $i++){
-            $html .= "<option value='$i'>$i</option>";
-        }
-        $html .= "</select>
+            for ($i = 0; $i < 21; $i++) {
+                $html .= "<option value='$i'>$i</option>";
+            }
+            $html .= "</select>
                                         <input type='submit' value='Ajouter au panier'>
                                     </form>
                  </div>";
-        return $html;
-
+            return $html;
+        }
     }
   
     private function renderCoord(){
@@ -121,11 +123,7 @@ class HangarView extends \mf\view\AbstractView
 
                     <a href=". $r->urlFor('accueil', []) .">Accueil</a>
                     <a href=". $r->urlFor('producteurs', []). ">Producteurs</a>
-                    <a href='#'>Panier</a>
-                    <a href='../accueil/'>Accueil</a>
-                    <a href='../producteurs/'>Producteurs</a>
-                    <a href='../panier/'>Panier</a>
-
+                    <a href=". $r->urlFor('panier', []). ">Panier</a>
                 </nav>
             </header>
         ";
