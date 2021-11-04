@@ -1,5 +1,6 @@
 <?php
 
+use lehangar\view\HangarView;
 use mf\utils\ClassLoader;
 use \mf\auth\Authentification;
 
