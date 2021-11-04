@@ -23,6 +23,11 @@ $db->setAsGlobal();
 $db->bootEloquent();
 
 session_start();
+
+//$_SESSION['cart'] = [];
+if(!isset($_SESSION['cart'])){
+    $_SESSION['cart'] = [];
+}
 $r = new \mf\router\Router();
 $r->addRoute('accueil', '/accueil/', '\lehangar\control\HangarController', 'viewProduit', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('ajouterPanier', '/ajouterPanier/', '\lehangar\control\HangarController', 'addToCart', Authentification::ACCESS_LEVEL_NONE);
@@ -32,5 +37,6 @@ $r->addRoute('coord', '/coord/', '\lehangar\control\HangarController', 'viewCoor
 $r->addRoute('confirm', '/confirm/', '\lehangar\control\HangarController', 'viewConfirm', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('sendCoord', '/sendCoord/', '\lehangar\control\HangarController', 'sendCoord', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('view', '/view/', '\lehangar\control\HangarController', 'viewArticle', Authentification::ACCESS_LEVEL_NONE);
+$r->addRoute('supprPanier', '/supprPanier/', '\lehangar\control\HangarController', 'supprPanier', Authentification::ACCESS_LEVEL_NONE);
 $r->setDefaultRoute('/accueil/');
 $r->run();

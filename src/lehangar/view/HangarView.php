@@ -116,6 +116,7 @@ class HangarView extends \mf\view\AbstractView
 
     protected function renderCart(){
         $prixTotal = 0;
+        $r = new Router();
         $html = "
             <section>
                 <h2>Votre panier 🛒:</h2>
@@ -125,18 +126,24 @@ class HangarView extends \mf\view\AbstractView
                         foreach ($this->data as $article) {
                             $prixTotal += $article[2];
 
-                            $html .= "
+
+                    foreach ($this->data as $key => $article){
+                        $prixTotal += $article['prixLot'];
+
+                        $html .= "
                             <div>
                                 <div>
-                                    <p>Quantité: $article[1]</p>
+                                    <p>Quantité: ". $article['quantite'] ."</p>
                                 </div>
                                 <div>
-                                    <p>Produit : " . $article[0]->nom . "</p>
-                                    <p>Prix : " . $article[0]->tarif_unitaire . "</p>
-                                    <p>Producteur : " . $article[0]->producteur->nom . "</p>
+                                    <p>Produit : ". $article['produit']->nom ."</p>
+                                    <p>Prix : ".$article['produit']->tarif_unitaire."</p>
+                                    <p>Producteur : ".$article['produit']->producteur->nom."</p>
                                 </div>
                                 <div>
-                                    <p>Total: $article[2]</p>
+                                    <p>Total: ". $article['prixLot'] ."</p>
+                                    <p>$key</p>
+                                    <a href='". $r->urlFor('supprPanier', ['id' => $key]) ."'>Supprimer</a>
                                 </div>
                             </div>
                         ";
