@@ -4,6 +4,8 @@ namespace lehangar\view;
 
 use lehangar\model\Categorie;
 use lehangar\model\Producteur;
+use mf\router\Router;
+use mf\utils\HttpRequest;
 
 class HangarView extends \mf\view\AbstractView
 {
@@ -89,33 +91,34 @@ class HangarView extends \mf\view\AbstractView
                 </div>";
     }
     private function renderProducteur(){
-        $html = '<div>
-                    <section>
+        $html = '<section>
+                    <div>
                         <h1>Découvrez nos producteurs ! 🌾</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis lorem ut purus posuere tempus nec at ante. Suspendisse ornare pulvinar pellentesque. Nullam sed viverra velit. Aliquam et nulla ut leo accumsan viverra nec non sapien. Suspendisse vel sapien leo. Nullam convallis ultricies nibh, vel facilisis arcu efficitur vel. Sed sapien risus, lacinia vitae lacus eget, porttitor tempor nibh.</p>
-                    </section>';
+                    </div>';
         foreach ($this->data as $producteur) {
-            $html .= '<section>
+            $html .= '<div>
                         <img src="https://www.tutorialspoint.com/assets/profiles/13558/profile/60_76068-1512713229.jpg">
                         <p>' . $producteur->nom . '</p>
                         <p>' . $producteur->mail . '</p>
                         <p>' . $producteur->localisation . '</p>
-                      </section>';
+                      </div>';
         }
-        $html .= '</div>';
+        $html .= '</section>';
 
         return $html;
     }
     
     protected function renderHeader(){
+        $r = new Router();
         return "
             <header>
                 <div>
                     <h1>LeHangar.local 🥕</h1>
                 </div>
                 <nav>
-                    <a href='#'>Accueil</a>
-                    <a href='#'>Producteurs</a>
+                    <a href=". $r->urlFor('accueil', []) .">Accueil</a>
+                    <a href=". $r->urlFor('producteurs', []). ">Producteurs</a>
                     <a href='#'>Panier</a>
                 </nav>
             </header>
@@ -166,6 +169,8 @@ class HangarView extends \mf\view\AbstractView
   
    private function renderProduit()
     {
+        $http_req = new HttpRequest();
+        $r = new Router();
         $html = "
             <section>
                         ";
@@ -173,9 +178,14 @@ class HangarView extends \mf\view\AbstractView
         foreach ($this->data as $produit) {
             $html .= "
                             <div>
-                                    <p>$produit->nom</p>
-                                    <p>$produit->tarif_unitaire €</p>
-                                    <p>" . $produit->producteur->nom ."</p>
+                                <a href=". $r->urlFor('view',['id' => $produit->id]).">
+                                    <img src='$http_req->root/html/img/courgette.jpg'>                             
+                                    <div>
+                                        <p>$produit->nom</p>
+                                        <p>$produit->tarif_unitaire €</p>
+                                        <p>" . $produit->producteur->nom ."</p>
+                                    </div>
+                                </a>
                                     <form action='../AjouterPanier/' method='post'>
                                     <input type='hidden' name='produit' value='$produit'>
                                     <select name='quantite'>
