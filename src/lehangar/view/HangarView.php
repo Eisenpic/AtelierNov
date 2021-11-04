@@ -185,9 +185,9 @@ class HangarView extends \mf\view\AbstractView
                                     <form action='". $r->urlFor('ajouterPanier') ."' method='post'>
                                     <input type='hidden' name='produit' value='$produit->id'>
                                     <select name='quantite'>
-                                        <option value=''>--Please choose an option--</option>";
+                                        <option value=''> 0 </option>";
 
-            for ($i = 0; $i < 21; $i++){
+            for ($i = 1; $i < 21; $i++){
                 $html .= "<option value='$i'>$i</option>";
             }
             $html .= "</select>
