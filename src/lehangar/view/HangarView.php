@@ -5,6 +5,8 @@ namespace lehangar\view;
 use lehangar\model\Categorie;
 use lehangar\model\Producteur;
 use mf\router\Router;
+use mf\utils\HttpRequest;
+
 
 class HangarView extends \mf\view\AbstractView
 {
@@ -47,9 +49,11 @@ class HangarView extends \mf\view\AbstractView
         $res = $this->data;
         $categorie = Categorie::where('id','=',$res->categorie_id)->first();
         $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
-        $html = "<div>
+        $http_req = new HttpRequest();
+        foreach ($this->data as $produit) {
+            $html = "<div>
                     <div>
-                        <img src='https://www.breakingnews.fr/wp-content/uploads/2020/08/pommes-de-terre-crues.jpg'>
+                        <img src='$http_req->root/html/img/$produit->img'>
                         <p>$res->description</p>
                     </div>
                     <div>
@@ -63,89 +67,51 @@ class HangarView extends \mf\view\AbstractView
                                     <select name='quantite'>
                                         <option value=''>--Please choose an option--</option>";
 
-        for ($i = 0; $i < 21; $i++){
-            $html .= "<option value='$i'>$i</option>";
-        }
-        $html .= "</select>
+            for ($i = 0; $i < 21; $i++) {
+                $html .= "<option value='$i'>$i</option>";
+            }
+            $html .= "</select>
                                         <input type='submit' value='Ajouter au panier'>
                                     </form>
                  </div>";
-        return $html;
-
+            return $html;
+        }
     }
 
+    private function renderProducteur(){
+        $html = '<section>
+                    <div>
+                        <h1>Découvrez nos producteurs ! 🌾</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis lorem ut purus posuere tempus nec at ante. Suspendisse ornare pulvinar pellentesque. Nullam sed viverra velit. Aliquam et nulla ut leo accumsan viverra nec non sapien. Suspendisse vel sapien leo. Nullam convallis ultricies nibh, vel facilisis arcu efficitur vel. Sed sapien risus, lacinia vitae lacus eget, porttitor tempor nibh.</p>
+                    </div>';
+        foreach ($this->data as $producteur) {
+            $html .= '<div>
+                        <img src="https://www.tutorialspoint.com/assets/profiles/13558/profile/60_76068-1512713229.jpg">
+                        <p>' . $producteur->nom . '</p>
+                        <p>' . $producteur->mail . '</p>
+                        <p>' . $producteur->localisation . '</p>
+                      </div>';
+        }
+        $html .= '</section>';
+
+        return $html;
+    }
+    
     protected function renderHeader(){
+        $r = new Router();
         return "
             <header>
                 <div>
                     <h1>LeHangar.local 🥕</h1>
                 </div>
                 <nav>
-                    <a href='../accueil/'>Accueil</a>
-                    <a href='../producteurs/'>Producteurs</a>
-                    <a href='../panier/'>Panier</a>
+
+                    <a href=". $r->urlFor('accueil', []) .">Accueil</a>
+                    <a href=". $r->urlFor('producteurs', []). ">Producteurs</a>
+                    <a href=". $r->urlFor('panier', []). ">Panier</a>
                 </nav>
             </header>
         ";
-    }
-
-    private function renderProduit()
-    {
-        $html = "
-            <section>
-                <div>
-                    <div> <!-- div avec overflow: scroll -->
-                        ";
-        $r = new Router();
-        foreach ($this->data as $produit) {
-            $html .= "
-                            <div>
-                                <div>
-                                    <p>$produit->nom</p>
-                                    <p>$produit->prix €</p>
-                                    <p>$produit->producteur->nom</p>
-                                    <form action='". $r->urlFor('ajouterPanier') ."' method='post'>
-                                    <input type='hidden' name='produit' value='$produit->id'>
-                                    <select name='quantite'>
-                                        <option value=''> 0 </option>";
-
-            for ($i = 1; $i < 21; $i++){
-                $html .= "<option value='$i'>$i</option>";
-            }
-            $html .= "</select>
-                                        <input type='submit' value='Ajouter au panier'>
-                                    </form>
-                                </div>
-                            </div>
-                        ";
-        }
-
-        $html .= "
-                    </div>
-                </div>
-            </section>
-        ";
-
-        return $html;
-    }
-
-    private function renderProducteur(){
-        $html = '<div>
-                    <section>
-                        <h1>Découvrez nos producteurs ! 🌾</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis lorem ut purus posuere tempus nec at ante. Suspendisse ornare pulvinar pellentesque. Nullam sed viverra velit. Aliquam et nulla ut leo accumsan viverra nec non sapien. Suspendisse vel sapien leo. Nullam convallis ultricies nibh, vel facilisis arcu efficitur vel. Sed sapien risus, lacinia vitae lacus eget, porttitor tempor nibh.</p>
-                    </section>';
-        foreach ($this->data as $producteur) {
-            $html .= '<section>
-                        <img src="https://www.tutorialspoint.com/assets/profiles/13558/profile/60_76068-1512713229.jpg">
-                        <p>' . $producteur->nom . '</p>
-                        <p>' . $producteur->mail . '</p>
-                        <p>' . $producteur->localisation . '</p>
-                      </section>';
-        }
-        $html .= '</div>';
-
-        return $html;
     }
 
     protected function renderCart(){
@@ -217,6 +183,48 @@ class HangarView extends \mf\view\AbstractView
                 <p>Vous allez être automatiquement redirigé vers l'accueil.</p>
             </div>
             ".header( 'Refresh:5; url=../accueil/', true, 303);
+  
+   private function renderProduit()
+    {
+        $http_req = new HttpRequest();
+        $r = new Router();
+        $html = "
+            <section>
+                        ";
+        $r = new Router();
+        foreach ($this->data as $produit) {
+            $html .= "
+                            <div>
+                                <a href=". $r->urlFor('view',['id' => $produit->id]).">
+                                    <div>
+                                    <img src='$http_req->root/html/img/$produit->img'>   
+                                    </div>                          
+                                    <div>
+                                        <p>$produit->nom <br>$produit->tarif_unitaire €</p>
+                                        <p>" . $produit->producteur->nom ."</p>
+                                    </div>
+                                </a>
+                                    <div>
+                                        <form action='../AjouterPanier/' method='post'>
+                                        <input type='hidden' name='produit' value='$produit'>
+                                        <select name='quantite'>
+                                            <option value=''> 0 </option>";
+
+
+            for ($i = 1; $i < 21; $i++){
+                $html .= "<option value='$i'>$i</option>";
+            }
+            $html .= "</select>
+                                            <input type='submit' value='Ajouter au panier'>
+                                        </form>
+                                    </div>
+                            </div>
+                        ";
+        }
+
+        $html .= "
+            </section>
+        ";
 
         return $html;
     }

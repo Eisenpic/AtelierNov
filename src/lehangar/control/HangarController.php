@@ -22,6 +22,7 @@ class HangarController extends AbstractController
     public function viewProduit(){
         $produits = Produit::select()->get();
         $view = new HangarView($produits);
+        $view->addStyleSheet('/html/css/accueil.css');
         $view->render('produit');
     }
 
@@ -39,6 +40,7 @@ class HangarController extends AbstractController
     public function viewProd(){
         $prod = Producteur::get();
         $view = new HangarView($prod);
+        $view->addStyleSheet('/html/css/producteur.css');
         $view->render('producteur');
 
     }

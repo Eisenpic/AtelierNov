@@ -1,0 +1,24 @@
+body {
+  font-family: Tahoma, sans-serif;
+}
+
+header {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #90c418;
+  color: white;
+  padding: 0 1%;
+  nav a{
+    text-decoration: none;
+    color: white;
+  }
+  h1 {
+    font-size: 25px;
+  }
+  nav {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
