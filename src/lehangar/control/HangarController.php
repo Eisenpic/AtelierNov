@@ -19,53 +19,22 @@ class HangarController extends AbstractController
         parent::__construct();
     }
 
-    public function sendCoord(){
-        $prenom = $_POST['prenom'];
-        $nom = $_POST['nom'];
-        $tel = $_POST['tel'];
-        $email = $_POST['email'];
-        $prenom = filter_var(trim($prenom), FILTER_SANITIZE_STRING);
-        $nom = filter_var(trim($nom), FILTER_SANITIZE_STRING);
-        $tel = filter_var(trim($tel), FILTER_SANITIZE_STRING);
-        $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
-
-        //Calculer le montant total
-        
-        $montant = 0;
-        $quantite = 0;
-        //print_r($_SESSION['cart'][0]);
-        foreach($_SESSION['cart'] as $cart) {
-            $montant += $cart[2];
-            //$quantite += ;
-        }
-
-
-        $command = new Commande();
-        $command->nom_client = $nom;
-        $command->prenom_client = $prenom;
-        $command->mail_client = $email;
-        $command->tel_client = $tel;
-        $command->montant = $montant;
-        $command->etat = 0;
-        //$command->save();
-
-
-        foreach($_SESSION['cart'] as $produit){
-            $contenu = new Contenu();
-            $contenu->quantite = $quantite;
-            $contenu->
-            $contenu->save();
-            header('Location: home/');
-        }
-
-        //header('Location: /accueil/');
-    }
-
     public function viewProduit(){
         $produits = Produit::select()->get();
         $view = new HangarView($produits);
         $view->addStyleSheet('/html/css/accueil.css');
         $view->render('produit');
+    }
+
+    public function viewArticle(){
+        try {
+            $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
+            $view = new HangarView($res);
+            $view->render('view');
+        } catch (ModelNotFoundException $e) {
+            echo "Incorrect product number";
+        }
+
     }
   
     public function viewProd(){
@@ -77,10 +46,6 @@ class HangarController extends AbstractController
     }
 
     public function viewCart(){
-        /*$produit1 = Produit::select()->where("id", "=", "1")->get();
-        array_push($_SESSION['cart'], [$produit1, 2, 4.6]);
-        $produit2 = Produit::select()->where("id", "=", "2")->get();
-        array_push($_SESSION['cart'], [$produit2, 1, 1.5]);*/
         if(!isset($_SESSION['cart'])){
             header('Location: ../accueil/');
         }
@@ -97,7 +62,6 @@ class HangarController extends AbstractController
         $produit = Produit::select()->where("id", "=", $produit)->first();
         $prixLot = $produit->tarif_unitaire * $quantite;
         array_push($_SESSION['cart'], [$produit, $quantite, $prixLot]);
-
         header('Location: ../accueil/');
     }
 
@@ -106,14 +70,46 @@ class HangarController extends AbstractController
         $view->render('coord');
     }
 
-    public function viewArticle(){
-        try {
-            $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
-            $view = new HangarView($res);
-            $view->render('view');
-        } catch (ModelNotFoundException $e) {
-            echo "Incorrect product number";
+    public function viewConfirm(){
+        $view = new HangarView("");
+        $view->render('confirm');
+    }
+
+    public function sendCoord(){
+        //Filtrage des données du formulaire
+        $nom = filter_var(trim($_POST['nom']), FILTER_SANITIZE_STRING);
+        $tel = filter_var(trim($_POST['tel']), FILTER_SANITIZE_STRING);
+        $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+
+        //Calculer le montant total du panier
+        $montant = 0;
+        foreach($_SESSION['cart'] as $cart) {
+            $montant += $cart['prixLot'];
         }
 
+        //Insertion de la commande
+        $command = new Commande();
+        $command->nom_client = $nom;
+        $command->mail_client = $email;
+        $command->tel_client = $tel;
+        $command->montant = $montant;
+        $command->etat = 0;
+        $command->save();
+
+        //Récupération du dernier INSERT dans la BDD
+        $idCommande = $command->id;
+
+        //Insertion des contenus pour chaques produits dans le panier
+        foreach($_SESSION['cart'] as $produit){
+            $contenu = new Contenu();
+            $contenu->quantite = $produit['quantite'];
+            $contenu->prod_id = $produit['produit']->id;
+            $contenu->commande_id = $idCommande;
+            $contenu->save();
+        }
+        //Réinitialise le panier
+        $_SESSION['cart'] = [];
+        header('Location: ../confirm/');
     }
+
 }
