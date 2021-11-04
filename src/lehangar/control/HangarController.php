@@ -94,9 +94,28 @@ class HangarController extends AbstractController
         $produit = $_POST['produit'];
         $produit = Produit::select()->where("id", "=", $produit)->first();
         $prixLot = $produit->tarif_unitaire * $quantite;
-        array_push($_SESSION['cart'], [$produit, $quantite, $prixLot]);
 
-        header('Location: ../accueil/');
+        if (!empty($_SESSION['cart'])) {
+            $compteur = 0;
+            for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+                if ($_SESSION['cart'][$i]['produit']['id'] == $produit['id']) {
+                    $compteur = $i+1;
+                }
+            }
+
+            if ($compteur == 0) {
+                array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
+                header('Location: ../accueil/');
+            } else {
+                $_SESSION['cart'][$compteur-1]['quantite'] += $quantite;
+                $_SESSION['cart'][$compteur-1]['prixLot'] += $prixLot;
+                header('Location: ../accueil/');
+            }
+
+        } else {
+            array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
+            header('Location: ../accueil/');
+        }
     }
 
     public function viewCoord(){
@@ -113,5 +132,17 @@ class HangarController extends AbstractController
             echo "Incorrect product number";
         }
 
+    }
+
+    public function supprPanier(){
+        $id = $_GET['id'];
+        unset($_SESSION['cart'][$id]);
+
+        for ($i=$id; $i < count($_SESSION['cart']); $i++){
+            $_SESSION['cart'][$i] = $_SESSION['cart'][$i+1];
+            unset($_SESSION['cart'][$i+1]);
+        }
+
+        header('Location: ../accueil/');
     }
 }
