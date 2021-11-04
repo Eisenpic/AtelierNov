@@ -183,6 +183,7 @@ class HangarView extends \mf\view\AbstractView
                 <p>Vous allez être automatiquement redirigé vers l'accueil.</p>
             </div>
             ".header( 'Refresh:5; url=../accueil/', true, 303);
+    }
   
    private function renderProduit()
     {
