@@ -168,14 +168,11 @@ class HangarView extends \mf\view\AbstractView
     {
         $html = "
             <section>
-                <div>
-                    <div> <!-- div avec overflow: scroll -->
                         ";
 
         foreach ($this->data as $produit) {
             $html .= "
                             <div>
-                                <div>
                                     <p>$produit->nom</p>
                                     <p>$produit->tarif_unitaire €</p>
                                     <p>" . $produit->producteur->nom ."</p>
@@ -190,14 +187,11 @@ class HangarView extends \mf\view\AbstractView
             $html .= "</select>
                                         <input type='submit' value='Ajouter au panier'>
                                     </form>
-                                </div>
                             </div>
                         ";
         }
 
         $html .= "
-                    </div>
-                </div>
             </section>
         ";
 
