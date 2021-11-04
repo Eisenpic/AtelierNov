@@ -1,5 +1,10 @@
 @import '_reset';
 @import '_header';
+@import '_footer';
+
+body{
+  background-color: #90c418;
+}
 
 section {
   display: grid;
@@ -10,7 +15,9 @@ section {
   width: 95%;
   margin: auto;
   > div {
+    background-color: white;
     padding: 0 20px;
+    margin-bottom: 30px;
     a {
       color: black;
       text-decoration: none;

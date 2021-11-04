@@ -90,6 +90,17 @@ class HangarController extends AbstractController
         $view->render('coord');
     }
 
+
+    public function viewArticle(){
+        try {
+            $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
+            $view = new HangarView($res);
+            $view->addStyleSheet('/html/css/article.css');
+            $view->render('view');
+        } catch (ModelNotFoundException $e) {
+            echo "Incorrect product number";
+        }
+    }
     public function viewConfirm(){
         $view = new HangarView("");
         $view->render('confirm');
@@ -105,6 +116,7 @@ class HangarController extends AbstractController
         $montant = 0;
         foreach($_SESSION['cart'] as $cart) {
             $montant += $cart['prixLot'];
+
         }
 
         //Insertion de la commande
