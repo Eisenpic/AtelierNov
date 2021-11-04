@@ -179,24 +179,27 @@ class HangarView extends \mf\view\AbstractView
             $html .= "
                             <div>
                                 <a href=". $r->urlFor('view',['id' => $produit->id]).">
-                                    <img src='$http_req->root/html/img/courgette.jpg'>                             
                                     <div>
-                                        <p>$produit->nom</p>
-                                        <p>$produit->tarif_unitaire €</p>
+                                    <img src='$http_req->root/html/img/$produit->img'>   
+                                    </div>                          
+                                    <div>
+                                        <p>$produit->nom <br>$produit->tarif_unitaire €</p>
                                         <p>" . $produit->producteur->nom ."</p>
                                     </div>
                                 </a>
-                                    <form action='../AjouterPanier/' method='post'>
-                                    <input type='hidden' name='produit' value='$produit'>
-                                    <select name='quantite'>
-                                        <option value=''> 0 </option>";
+                                    <div>
+                                        <form action='../AjouterPanier/' method='post'>
+                                        <input type='hidden' name='produit' value='$produit'>
+                                        <select name='quantite'>
+                                            <option value=''> 0 </option>";
 
             for ($i = 1; $i < 21; $i++){
                 $html .= "<option value='$i'>$i</option>";
             }
             $html .= "</select>
-                                        <input type='submit' value='Ajouter au panier'>
-                                    </form>
+                                            <input type='submit' value='Ajouter au panier'>
+                                        </form>
+                                    </div>
                             </div>
                         ";
         }

@@ -323,6 +323,9 @@ header {
     display: flex;
     justify-content: space-between; }
 
+body {
+  background-color: #90c418; }
+
 section {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -332,12 +335,25 @@ section {
   width: 95%;
   margin: auto; }
   section > div {
+    background-color: white;
+    padding-bottom: 10px;
     -webkit-box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.21);
     box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.21); }
     section > div a {
       color: black;
       text-decoration: none; }
+      section > div a div:first-child {
+        width: 100%;
+        height: 250px;
+        display: flex; }
       section > div a img {
-        max-width: 100%; }
+        max-width: 100%;
+        width: 100%; }
+      section > div a div:last-child {
+        display: flex;
+        justify-content: space-around; }
+    section > div div:last-child {
+      display: flex;
+      justify-content: center; }
 
 /*# sourceMappingURL=accueil.css.map */
