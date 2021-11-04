@@ -96,7 +96,7 @@ class HangarController extends AbstractController
         $prixLot = $produit->tarif_unitaire * $quantite;
         array_push($_SESSION['cart'], [$produit, $quantite, $prixLot]);
 
-        header('Location: /accueil/');
+        header('Location: ../accueil/');
     }
 
     public function viewCoord(){
