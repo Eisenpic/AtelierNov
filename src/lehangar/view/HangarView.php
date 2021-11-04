@@ -123,9 +123,6 @@ class HangarView extends \mf\view\AbstractView
                 <div>
                     <div> <!-- div avec overflow: scroll -->
                         ";
-                        foreach ($this->data as $article) {
-                            $prixTotal += $article[2];
-
 
                     foreach ($this->data as $key => $article){
                         $prixTotal += $article['prixLot'];
