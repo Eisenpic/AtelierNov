@@ -83,19 +83,24 @@ class HangarView extends \mf\view\AbstractView
     }
 
     private function renderProducteur(){
+        $http_req = new HttpRequest();
         $html = '<section>
                     <div>
                         <h1>Découvrez nos producteurs ! 🌾</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis lorem ut purus posuere tempus nec at ante. Suspendisse ornare pulvinar pellentesque. Nullam sed viverra velit. Aliquam et nulla ut leo accumsan viverra nec non sapien. Suspendisse vel sapien leo. Nullam convallis ultricies nibh, vel facilisis arcu efficitur vel. Sed sapien risus, lacinia vitae lacus eget, porttitor tempor nibh.</p>
                     </div>';
         foreach ($this->data as $producteur) {
-            $html .= '<div>
-                        <img src="https://www.tutorialspoint.com/assets/profiles/13558/profile/60_76068-1512713229.jpg">
-                        <p>' . $producteur->nom . '</p>
-                        <p>' . $producteur->mail . '</p>
-                        <p>' . $producteur->localisation . '</p>
-                      </div>';
-        }
+            if($producteur->nom != 'admin') {
+                $html .= "<div>
+                        <img src='$http_req->root/html/img/photo/$producteur->photo'>
+                        <div>
+                        <p>$producteur->nom</p>
+                        <p>$producteur->mail</p>
+                        <p>$producteur->localisation</p>
+                      </div>
+                      </div>";
+                }
+            }
         $html .= '</section>';
 
         return $html;
@@ -242,7 +247,7 @@ class HangarView extends \mf\view\AbstractView
                                 <div>
                                     <a href=" . $r->urlFor('view', ['id' => $produit->id]) . ">
                                         <div>
-                                            <img src='$http_req->root/html/img/$produit->img'>
+                                            <img src='$http_req->root/html/img/product/$produit->img'>
                                         </div>
                                         <div>
                                             <p>$produit->nom <br>$produit->tarif_unitaire €</p>
