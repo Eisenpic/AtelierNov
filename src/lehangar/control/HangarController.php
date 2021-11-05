@@ -113,6 +113,7 @@ class HangarController extends AbstractController
     //affiche la page qui confirme la commande
     public function viewConfirm(){
         $view = new HangarView("");
+        $view->addStyleSheet('/html/css/confirm.css');
         $view->render('confirm');
     }
 
