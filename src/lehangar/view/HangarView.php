@@ -172,7 +172,7 @@ class HangarView extends \mf\view\AbstractView
 
     private function renderCoord(){
         if (!empty($_SESSION['cart'])) {
-            $html = "<div>
+            $html = "<section>
                         <h2>Vos coordonnées ☎️ :</h2>
                         <div>
                             <form action='../sendCoord/' method='post'>
@@ -186,7 +186,7 @@ class HangarView extends \mf\view\AbstractView
                                 <button type='submit'>Valider</button>
                             </form>
                         </div>
-                    </div>";
+                    </section>";
             return $html;
         } else {
             header('Location: ../accueil/');
