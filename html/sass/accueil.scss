@@ -5,15 +5,31 @@
 body{
   background-color: #90c418;
 }
+
+#categorieTitle{
+  width: 95%;
+  margin: 50px auto 10px;
+
+  h2{
+    color: white;
+    border-bottom: 2px solid white;
+    width: auto;
+    display: table;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 30px;
+  }
+}
+
 section {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 38px;
   grid-row-gap: 30px;
   width: 95%;
   margin: auto;
   > div{
+    grid-column: 4 span;
     background-color: white;
     padding-bottom: 10px;
     -webkit-box-shadow: 0px 0px 16px 5px rgba(0,0,0,0.21);
@@ -29,6 +45,8 @@ section {
       img {
         max-width:100%;
         width: 100%;
+        height: 250px;
+        object-fit: cover;
       }
       div:last-child{
         display: flex;
@@ -38,6 +56,30 @@ section {
     div:last-child{
       display: flex;
       justify-content: center;
+    }
+  }
+}
+
+@media screen and (min-width: 850px){
+  section {
+    > div {
+      grid-column: 2 span;
+
+      &:nth-child(3n){
+        grid-column: 2 / 4;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1300px){
+  section {
+    > div {
+      grid-column: 1 span;
+
+      &:nth-child(3n){
+        grid-column: 1 span;
+      }
     }
   }
 }

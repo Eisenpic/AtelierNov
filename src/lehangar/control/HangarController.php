@@ -19,13 +19,16 @@ class HangarController extends AbstractController
         parent::__construct();
     }
 
+    //affiche tous les produits sur la page d'accueil
     public function viewProduit(){
-        $produits = Produit::select()->get();
-        $view = new HangarView($produits);
+        //$produits = Produit::select()->orderBy('categorie_id')->get();
+        $categorie = Categorie::select()->get();
+        $view = new HangarView($categorie);
         $view->addStyleSheet('/html/css/accueil.css');
         $view->render('produit');
     }
 
+    //affiche un article en détail
     public function viewArticle(){
         try {
             $res = Produit::where('id','=',$_GET['id'])->firstOrFail();
@@ -37,12 +40,17 @@ class HangarController extends AbstractController
         }
 
     }
+
     public function viewDetailProducteur(){
         $res = Producteur::where('id','=',$_GET['id'])->first();
         $view = new HangarView($res);
         $view->addStyleSheet('/html/css/detailproducteur.css');
         $view->render('viewproducteur');
     }
+
+
+    //affiche la liste des producteurs
+
     public function viewProd(){
         $prod = Producteur::get();
         $view = new HangarView($prod);
@@ -51,56 +59,64 @@ class HangarController extends AbstractController
 
     }
 
+    //affiche le panier
     public function viewCart(){
-        if(!isset($_SESSION['cart'])){
-            header('Location: ../accueil/');
-        }
-        else{
             $cart = $_SESSION['cart'];
             $view = new HangarView($cart);
+            $view->addStyleSheet('/html/css/panier.css');
             $view->render('cart');
-        }
     }
 
+    //ajoute un item dans le panier
     public function addToCart(){
         $quantite = filter_var($_POST['quantite'], FILTER_VALIDATE_INT);
         $produit = $_POST['produit'];
         $produit = Produit::select()->where("id", "=", $produit)->first();
         $prixLot = $produit->tarif_unitaire * $quantite;
-
-        if (!empty($_SESSION['cart'])) {
-            $compteur = 0;
-            for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-                if ($_SESSION['cart'][$i]['produit']['id'] == $produit['id']) {
-                    $compteur = $i+1;
+        if($quantite != 0) {
+            //si le panier n'est pas vide on vérifie que le produit qui va s'ajouter n'est pas déjà présent
+            if (!empty($_SESSION['cart'])) {
+                $compteur = 0;
+                for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+                    //si on trouve un item avec le même id on donne à la variable compteur le n° de l'item dans le panier +1
+                    //pour ne pas qu'il soit à 0 qui correspond au fait que le produit n'est pas dans le panier
+                    if ($_SESSION['cart'][$i]['produit']['id'] == $produit['id']) {
+                        $compteur = $i + 1;
+                    }
                 }
-            }
 
-            if ($compteur == 0) {
-                array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
-                header('Location: ../accueil/');
+                //si 0 le produit n'est pas dans le panier on l'ajoute
+                if ($compteur == 0) {
+                    array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
+
+                    //sinon on récupère sa place dans le tableau panier grâce au compteur et on augmente la quantite et le prix du lot
+                } else {
+                    $_SESSION['cart'][$compteur - 1]['quantite'] += $quantite;
+                    $_SESSION['cart'][$compteur - 1]['prixLot'] += $prixLot;
+                }
+
+                //sinon si le panier est vide on ajoute simplement sans vérifier
             } else {
-                $_SESSION['cart'][$compteur-1]['quantite'] += $quantite;
-                $_SESSION['cart'][$compteur-1]['prixLot'] += $prixLot;
-                header('Location: ../accueil/');
+                array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
             }
-
-        } else {
-            array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
-            header('Location: ../accueil/');
         }
+        header('Location: ../accueil/');
     }
 
+    //affiche le formulaire qui permet de finaliser une commande
     public function viewCoord(){
         $view = new HangarView("");
+        $view->addStyleSheet('/html/css/coord.css');
         $view->render('coord');
     }
 
+    //affiche la page qui confirme la commande
     public function viewConfirm(){
         $view = new HangarView("");
         $view->render('confirm');
     }
 
+    //envoi les données de la commande en BDD
     public function sendCoord(){
         //Filtrage des données du formulaire
         $nom = filter_var(trim($_POST['nom']), FILTER_SANITIZE_STRING);
@@ -134,11 +150,16 @@ class HangarController extends AbstractController
             $contenu->commande_id = $idCommande;
             $contenu->save();
         }
+
+        $_SESSION['commande'] = ['client' => ['nom' => $nom, 'email' => $email, 'telephone' => $tel], 'panier' => $_SESSION['cart']];
+
         //Réinitialise le panier
         $_SESSION['cart'] = [];
+
         header('Location: ../confirm/');
     }
 
+    //supprime l'item demandé du panier
     public function supprPanier(){
         $id = $_GET['id'];
         unset($_SESSION['cart'][$id]);
@@ -148,6 +169,6 @@ class HangarController extends AbstractController
             unset($_SESSION['cart'][$i+1]);
         }
 
-        header('Location: ../accueil/');
+        header('Location: ../panier/');
     }
 }
