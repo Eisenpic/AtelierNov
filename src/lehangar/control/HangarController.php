@@ -21,8 +21,9 @@ class HangarController extends AbstractController
 
     //affiche tous les produits sur la page d'accueil
     public function viewProduit(){
-        $produits = Produit::select()->get();
-        $view = new HangarView($produits);
+        //$produits = Produit::select()->orderBy('categorie_id')->get();
+        $categorie = Categorie::select()->get();
+        $view = new HangarView($categorie);
         $view->addStyleSheet('/html/css/accueil.css');
         $view->render('produit');
     }
