@@ -53,6 +53,7 @@ class HangarController extends AbstractController
     public function viewCart(){
             $cart = $_SESSION['cart'];
             $view = new HangarView($cart);
+            $view->addStyleSheet('/html/css/panier.css');
             $view->render('cart');
     }
 
@@ -96,6 +97,7 @@ class HangarController extends AbstractController
     //affiche le formulaire qui permet de finaliser une commande
     public function viewCoord(){
         $view = new HangarView("");
+        $view->addStyleSheet('/html/css/coord.css');
         $view->render('coord');
     }
 
