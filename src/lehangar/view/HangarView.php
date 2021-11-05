@@ -65,7 +65,7 @@ class HangarView extends \mf\view\AbstractView
                         <p>Produit : ". $this->data->nom ."</p>
                         <p>Type : " . $this->data->categorie->nom ."</p>
                         <p>Prix : ". $this->data->tarif_unitaire ."</p>
-                        <p><span>Producteur : </span><a href=" . $r->urlFor('viewproducteur', ['id' => $this->data->producteur->id]) . "> ".$this->data->producteur->nom ." </p>
+                        <p><span>Producteur : </span><a href=" . $r->urlFor('viewproducteur', ['id' => $this->data->producteur->id]) . "> ".$this->data->producteur->nom ."> </p>
                     </div>
 
                     <div>
