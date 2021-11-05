@@ -403,10 +403,34 @@ section div:first-child p {
 section div:nth-child(2) {
   text-align: center;
 }
+section div:nth-child(2) span {
+  font-weight: bold;
+}
 section div:last-child {
   display: flex;
   justify-content: center;
   padding-bottom: 10px;
+}
+
+section div:last-child form input[type=submit] {
+  cursor: pointer;
+  border: none;
+  background: white;
+  color: black;
+  margin: auto;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px black;
+}
+section div:last-child form input[type=submit]:hover {
+  background: #b1aeae;
+  color: black;
+  transition: background-color 0.3s ease-in-out;
+}
+section div:last-child form select {
+  font-size: 0.9rem;
+  padding: 3px;
+  border-radius: 15px;
 }
 
 /*# sourceMappingURL=article.css.map */

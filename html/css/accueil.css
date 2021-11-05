@@ -427,6 +427,9 @@ section > div a img {
   height: 250px;
   object-fit: cover;
 }
+section > div a span {
+  font-weight: bold;
+}
 section > div a div:last-child {
   display: flex;
   justify-content: space-around;
@@ -434,6 +437,25 @@ section > div a div:last-child {
 section > div div:last-child {
   display: flex;
   justify-content: center;
+}
+section > div div:last-child form input[type=submit] {
+  cursor: pointer;
+  border: none;
+  background: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px black;
+}
+section > div div:last-child form input[type=submit]:hover {
+  background: #b1aeae;
+  color: black;
+  transition: background-color 0.3s ease-in-out;
+}
+section > div div:last-child form select {
+  font-size: 0.9rem;
+  padding: 3px;
+  border-radius: 15px;
 }
 
 @media screen and (min-width: 850px) {
