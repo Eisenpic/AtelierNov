@@ -24,7 +24,7 @@ $db->bootEloquent();
 
 session_start();
 
-//$_SESSION['cart'] = [];
+//initialisation du panier si il n'existe pas
 if(!isset($_SESSION['cart'])){
     $_SESSION['cart'] = [];
 }

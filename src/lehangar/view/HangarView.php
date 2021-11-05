@@ -48,31 +48,27 @@ class HangarView extends \mf\view\AbstractView
     }
 
     private function renderView(){
-        $res = $this->data;
-        $categorie = Categorie::where('id','=',$res->categorie_id)->first();
-        $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
         $http_req = new HttpRequest();
-        foreach ($this->data as $produit) {
             $html = "<section>
                     <div>
                         <div>
-                        <img src='$http_req->root/html/img/$res->img'>
+                        <img src='$http_req->root/html/img/". $this->data->img ."'>
                         </div>
-                        <p>$res->description</p>
+                        <p>". $this->data->description ."</p>
                     </div>
                     <div>
-                        <p>Produit : $res->nom</p>
-                        <p>Type : $categorie->nom</p>
-                        <p>Prix : $res->tarif_unitaire</p>
-                        <p>Producteur : $producteur->nom</p>
+                        <p>Produit : ". $this->data->nom ."</p>
+                        <p>Type : " . $this->data->categorie->nom ."</p>
+                        <p>Prix : ". $this->data->tarif_unitaire ."</p>
+                        <p>Producteur : " . $this->data->producteur->nom ."</p>
                     </div>
 
                     <div>
-                    <form action='../AjouterPanier/' method='post'>
+                    <form action='../ajouterPanier/' method='post'>
 
-                                    <input type='hidden' name='produit' value='$res'>
+                                    <input type='hidden' name='produit' value='". $this->data->id ."'>
                                     <select name='quantite'>
-                                        <option value=''>0</option>";
+                                        <option value='0'>0</option>";
 
             for ($i = 1; $i < 21; $i++) {
                 $html .= "<option value='$i'>$i</option>";
@@ -83,7 +79,6 @@ class HangarView extends \mf\view\AbstractView
                                 </div>
                  </section>";
             return $html;
-        }
     }
 
     private function renderProducteur(){
@@ -147,7 +142,6 @@ class HangarView extends \mf\view\AbstractView
                                 </div>
                                 <div>
                                     <p>Total: ". $article['prixLot'] ."</p>
-                                    <p>$key</p>
                                     <a href='". $r->urlFor('supprPanier', ['id' => $key]) ."'>Supprimer</a>
                                 </div>
                             </div>
@@ -157,11 +151,18 @@ class HangarView extends \mf\view\AbstractView
 
                         $html .= "
                     </div>
-                    
-                    <div>
-                        <p>Total: $prixTotal €</p>
-                        <a href=../coord/>Valider</a>
-                    </div>
+                    ";
+
+                    if (!empty($_SESSION['cart'])) {
+                        $html .= "<div>
+                            <p>Total: $prixTotal €</p>
+                            <a href=../coord/>Valider</a>
+                        </div>";
+                    } else {
+                        $html .= "Votre panier est vide";
+                    }
+
+                    $html .= "
                 </div>
             </section>
         ";
@@ -170,22 +171,26 @@ class HangarView extends \mf\view\AbstractView
     }
 
     private function renderCoord(){
-        $html = "<div>
-                    <h2>Vos coordonnées ☎️ :</h2>
-                    <div>
-                        <form action='../sendCoord/' method='post'>
-                                Nom :<input type='text' name='nom' required>
-                                <br />
-                                Téléphone :<input type='number' name='tel' required>
-                                <br />
-                                Mail :<input type='email' name='email' required>
-                                <br />
-                            <p>⚠️ Le paiement s'effectue lors du retrait de la commande</p>                    
-                            <button type='submit'>Valider</button>
-                        </form>
-                    </div>
-                </div>";
-        return $html;
+        if (!empty($_SESSION['cart'])) {
+            $html = "<div>
+                        <h2>Vos coordonnées ☎️ :</h2>
+                        <div>
+                            <form action='../sendCoord/' method='post'>
+                                    Nom :<input type='text' name='nom' required>
+                                    <br />
+                                    Téléphone :<input type='number' name='tel' required>
+                                    <br />
+                                    Mail :<input type='email' name='email' required>
+                                    <br />
+                                <p>⚠️ Le paiement s'effectue lors du retrait de la commande</p>                    
+                                <button type='submit'>Valider</button>
+                            </form>
+                        </div>
+                    </div>";
+            return $html;
+        } else {
+            header('Location: ../accueil/');
+        }
     }
 
     private function renderConfirm(){
@@ -220,9 +225,9 @@ class HangarView extends \mf\view\AbstractView
                                 </a>
                                     <div>
                                         <form action='../ajouterPanier/' method='post'>
-                                        <input type='hidden' name='produit' value='$produit'>
+                                        <input type='hidden' name='produit' value='$produit->id'>
                                         <select name='quantite'>
-                                            <option value=''> 0 </option>";
+                                            <option value='0'> 0 </option>";
 
 
             for ($i = 1; $i < 21; $i++){
