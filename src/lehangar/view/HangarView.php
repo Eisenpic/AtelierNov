@@ -218,7 +218,7 @@ class HangarView extends \mf\view\AbstractView
                                     </div>
                                 </a>
                                     <div>
-                                        <form action='../AjouterPanier/' method='post'>
+                                        <form action='../ajouterPanier/' method='post'>
                                         <input type='hidden' name='produit' value='$produit'>
                                         <select name='quantite'>
                                             <option value=''> 0 </option>";
