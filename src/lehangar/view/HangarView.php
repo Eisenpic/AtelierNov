@@ -206,44 +206,47 @@ class HangarView extends \mf\view\AbstractView
    private function renderProduit()
     {
         $http_req = new HttpRequest();
+        $html = "";
         $r = new Router();
-        $html = "
-            <section>
-                        ";
-        $r = new Router();
-        foreach ($this->data as $produit) {
-            $html .= "
-                            <div>
-                                <a href=". $r->urlFor('view',['id' => $produit->id]).">
-                                    <div>
-                                    <img src='$http_req->root/html/img/$produit->img'>   
-                                    </div>                          
-                                    <div>
-                                        <p>$produit->nom <br>$produit->tarif_unitaire €</p>
-                                        <p>" . $produit->producteur->nom ."</p>
-                                    </div>
-                                </a>
+        foreach ($this->data as $categorie) {
+            if (count($categorie->produits) != 0) {
+                $html .= "
+                        <div id='categorieTitle'>
+                            <h2>$categorie->nom</h2>
+                        </div>
+                        <section>";
+                foreach ($categorie->produits as $produit) {
+                    $html .= "
+                                <div>
+                                    <a href=" . $r->urlFor('view', ['id' => $produit->id]) . ">
+                                        <div>
+                                            <img src='$http_req->root/html/img/$produit->img'>
+                                        </div>
+                                        <div>
+                                            <p>$produit->nom <br>$produit->tarif_unitaire €</p>
+                                            <p>" . $produit->producteur->nom . "</p>
+                                        </div>
+                                    </a>
                                     <div>
                                         <form action='../ajouterPanier/' method='post'>
-                                        <input type='hidden' name='produit' value='$produit->id'>
-                                        <select name='quantite'>
-                                            <option value='0'> 0 </option>";
+                                            <input type='hidden' name='produit' value='$produit->id'>
+                                            <select name='quantite'>
+                                                <option value='0'> 0 </option>";
 
 
-            for ($i = 1; $i < 21; $i++){
-                $html .= "<option value='$i'>$i</option>";
+                    for ($i = 1; $i < 21; $i++) {
+                        $html .= "<option value='$i'>$i</option>";
+                    }
+                    $html .= "</select>
+                                                        <input type='submit' value='Ajouter au panier'>
+                                                    </form>
+                                                </div>
+                                        </div>
+                            ";
+                }
+                $html .= "</section>";
             }
-            $html .= "</select>
-                                            <input type='submit' value='Ajouter au panier'>
-                                        </form>
-                                    </div>
-                            </div>
-                        ";
         }
-
-        $html .= "
-            </section>
-        ";
 
         return $html;
     }

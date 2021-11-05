@@ -5,10 +5,25 @@
 body{
   background-color: #90c418;
 }
+
+#categorieTitle{
+  width: 95%;
+  margin: 50px auto 10px;
+
+  h2{
+    color: white;
+    border-bottom: 2px solid white;
+    width: auto;
+    display: table;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 30px;
+  }
+}
+
 section {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 38px;
   grid-row-gap: 30px;
   width: 95%;
