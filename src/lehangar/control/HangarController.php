@@ -142,8 +142,12 @@ class HangarController extends AbstractController
             $contenu->commande_id = $idCommande;
             $contenu->save();
         }
+
+        $_SESSION['commande'] = ['client' => ['nom' => $nom, 'email' => $email, 'telephone' => $tel], 'panier' => $_SESSION['cart']];
+
         //Réinitialise le panier
         $_SESSION['cart'] = [];
+
         header('Location: ../confirm/');
     }
 

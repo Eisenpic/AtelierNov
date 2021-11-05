@@ -9,8 +9,8 @@ html {
   line-height: 1.15;
   /* 1 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */ }
-
+  /* 2 */
+}
 
 /* Sections
    ========================================================================== */
@@ -18,19 +18,15 @@ html {
  * Remove the margin in all browsers.
  */
 body {
-
   margin: 0;
 }
-
 
 /**
  * Render the `main` element consistently in IE.
  */
 main {
-
   display: block;
 }
-
 
 /**
  * Correct the font size and margin on `h1` elements within `section` and
@@ -40,7 +36,6 @@ h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
-
 
 /* Grouping content
    ========================================================================== */
@@ -57,7 +52,6 @@ hr {
   /* 2 */
 }
 
-
 /**
  * 1. Correct the inheritance and scaling of font size in all browsers.
  * 2. Correct the odd `em` font sizing in all browsers.
@@ -68,7 +62,6 @@ pre {
   font-size: 1em;
   /* 2 */
 }
-
 
 /* Text-level semantics
    ========================================================================== */
@@ -92,7 +85,6 @@ abbr[title] {
   /* 2 */
 }
 
-
 /**
  * Add the correct font weight in Chrome, Edge, and Safari.
  */
@@ -100,7 +92,6 @@ b,
 strong {
   font-weight: bolder;
 }
-
 
 /**
  * 1. Correct the inheritance and scaling of font size in all browsers.
@@ -121,7 +112,6 @@ samp {
 small {
   font-size: 80%;
 }
-
 
 /**
  * Prevent `sub` and `sup` elements from affecting the line height in
@@ -197,7 +187,6 @@ select {
  * Correct the inability to style clickable types in iOS and Safari.
  */
 button,
-
 [type=button],
 [type=reset],
 [type=submit] {
@@ -279,7 +268,6 @@ textarea {
   /* 2 */
 }
 
-
 /**
  * Correct the cursor style of increment and decrement buttons in Chrome.
  */
@@ -353,28 +341,40 @@ body {
   font-family: Tahoma, sans-serif;
 }
 
-
 header {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   background-color: #90c418;
   color: white;
   padding: 0 1%;
 }
-header nav a {
-  text-decoration: none;
-  color: white;
-}
 header h1 {
   font-size: 25px;
 }
 header nav {
-  width: 300px;
+  width: 95%;
   display: flex;
   justify-content: space-between;
 }
+header nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
 
+@media screen and (min-width: 600px) {
+  header {
+    flex-direction: row;
+  }
+  header nav {
+    width: 300px;
+  }
+  header nav a {
+    font-size: 20px;
+  }
+}
 footer {
   background-color: white;
 }
