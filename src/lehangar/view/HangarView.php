@@ -51,18 +51,9 @@ class HangarView extends \mf\view\AbstractView
         return $html;
     }
 
-    private function renderView()
-    {
-        $res = $this->data;
-        $categorie = Categorie::where('id', '=', $res->categorie_id)->first();
-        $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
-        $http_req = new HttpRequest();
-        $r = new Router();
-        foreach ($this->data as $produit) {
-
     private function renderView(){
         $http_req = new HttpRequest();
-            $html = "<section>
+        $html = "<section>
                     <div>
                         <div>
                         <img src='$http_req->root/html/img/". $this->data->img ."'>
@@ -70,11 +61,10 @@ class HangarView extends \mf\view\AbstractView
                         <p>". $this->data->description ."</p>
                     </div>
                     <div>
-
-                        <p>Produit : $res->nom</p>
-                        <p>Type : $categorie->nom</p>
-                        <p>Prix : $res->tarif_unitaire</p>
-                        <p>Producteur : <a href=" . $r->urlFor('viewproducteur', ['id' => $producteur->id]) . "> $producteur->nom</a></p>
+                        <p>Produit : ". $this->data->nom ."</p>
+                        <p>Type : " . $this->data->categorie->nom ."</p>
+                        <p>Prix : ". $this->data->tarif_unitaire ."</p>
+                        <p>Producteur : " . $this->data->producteur->nom ."</p>
                     </div>
 
                     <div>
@@ -84,15 +74,15 @@ class HangarView extends \mf\view\AbstractView
                                     <select name='quantite'>
                                         <option value='0'>0</option>";
 
-            for ($i = 1; $i < 21; $i++) {
-                $html .= "<option value='$i'>$i</option>";
-            }
-            $html .= "</select>
+        for ($i = 1; $i < 21; $i++) {
+            $html .= "<option value='$i'>$i</option>";
+        }
+        $html .= "</select>
                                         <input type='submit' value='Ajouter au panier'>
                                     </form>
                                 </div>
                  </section>";
-            return $html;
+        return $html;
     }
 
 
