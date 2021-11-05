@@ -406,8 +406,8 @@ section > div {
   background-color: white;
 }
 section > div > div:first-child {
-  overflow: scroll;
-  height: 50vh;
+  overflow-y: scroll;
+  max-height: 50vh;
 }
 section > div > div:first-child > div {
   display: flex;

@@ -30,8 +30,8 @@ section {
     background-color: white;
 
     > div:first-child {
-      overflow: scroll;
-      height: 50vh;
+      overflow-y: scroll;
+      max-height: 50vh;
 
       > div {
         display: flex;
