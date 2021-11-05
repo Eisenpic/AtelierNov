@@ -41,7 +41,7 @@ class HangarController extends AbstractController
 
     }
 
-    public function viewDetailProducteur(){
+    public function viewProducteur(){
         $res = Producteur::where('id','=',$_GET['id'])->first();
         $view = new HangarView($res);
         $view->addStyleSheet('/html/css/detailproducteur.css');
@@ -113,6 +113,7 @@ class HangarController extends AbstractController
     //affiche la page qui confirme la commande
     public function viewConfirm(){
         $view = new HangarView("");
+        $view->addStyleSheet('/html/css/confirm.css');
         $view->render('confirm');
     }
 

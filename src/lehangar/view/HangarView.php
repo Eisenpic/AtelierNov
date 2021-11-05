@@ -52,11 +52,12 @@ class HangarView extends \mf\view\AbstractView
     }
 
     private function renderView(){
+        $r = new Router();
         $http_req = new HttpRequest();
         $html = "<section>
                     <div>
                         <div>
-                        <img src='$http_req->root/html/img/". $this->data->img ."'>
+                        <img src='$http_req->root/html/img/product/". $this->data->img ."'>
                         </div>
                         <p>". $this->data->description ."</p>
                     </div>
@@ -64,7 +65,7 @@ class HangarView extends \mf\view\AbstractView
                         <p>Produit : ". $this->data->nom ."</p>
                         <p>Type : " . $this->data->categorie->nom ."</p>
                         <p>Prix : ". $this->data->tarif_unitaire ."</p>
-                        <p>Producteur : " . $this->data->producteur->nom ."</p>
+                        <p><span>Producteur : </span><a href=" . $r->urlFor('viewproducteur', ['id' => $this->data->producteur->id]) . "> ".$this->data->producteur->nom ." </p>
                     </div>
 
                     <div>
@@ -88,6 +89,7 @@ class HangarView extends \mf\view\AbstractView
 
     private function renderProducteur(){
         $http_req = new HttpRequest();
+        $r = new Router();
         $html = '<section>
                     <div>
                         <h1>Découvrez nos producteurs ! 🌾</h1>
@@ -96,6 +98,7 @@ class HangarView extends \mf\view\AbstractView
         foreach ($this->data as $producteur) {
             if($producteur->nom != 'admin') {
                 $html .= "<div>
+                        <a href=" . $r->urlFor('viewproducteur', ['id' => $producteur->id]) . ">
                         <img src='$http_req->root/html/img/photo/$producteur->photo'>
                         <div>
                         <p>$producteur->nom</p>
@@ -215,13 +218,13 @@ class HangarView extends \mf\view\AbstractView
     private function renderConfirm()
     {
         $html = "
-            <div>
-
-                <h1>Votre commande a bien été enregistrée.</h1>
+        <section>
+                <h1>Votre commande a bien été enregistrée !</h1>
                 <h2>Informations personnels</h2>
-                <p>Nom: ". $_SESSION['commande']['client']['nom'] ."</p>
-                <p>Email: ". $_SESSION['commande']['client']['email'] ."</p>
-                <p>Telephone: ". $_SESSION['commande']['client']['telephone'] ."</p>
+            <div>
+                <p><span>Nom: </span>". $_SESSION['commande']['client']['nom'] ."</p>
+                <p><span>Email: </span>". $_SESSION['commande']['client']['email'] ."</p>
+                <p><span>Telephone: </span>". $_SESSION['commande']['client']['telephone'] ."</p>
             </div>";
 
         $html .= "<h2>Produits dans la commande</h2>";
@@ -229,14 +232,18 @@ class HangarView extends \mf\view\AbstractView
         $compteur = 1;
         foreach ($_SESSION['commande']['panier'] as $item){
             $html .= "
-               <h3>Produit $compteur</h3>
-               <p>Nom: ". $item['produit']['nom'] ."</p>
-               <p>Quantité: ". $item['quantite'] ."</p>
-               <p>Producteur: ". $item['produit']['producteur']['nom'] ."</p>
-               <p>Prix du lot: ". $item['prixLot'] ." €</p>
+                <div>
+                   <h3>Produit $compteur</h3>
+                   <p><span>Nom: </span>". $item['produit']['nom'] ."</p>
+                   <p><span>Quantité: </span>". $item['quantite'] ."</p>
+                   <p><span>Producteur: </span>". $item['produit']['producteur']['nom'] ."</p>
+                   <p><span>Prix du lot: </span>". $item['prixLot'] ." €</p>
+                </div>
             ";
             $compteur++;
         }
+
+        $html .= "</section>";
         return $html;
     }
 
@@ -261,7 +268,7 @@ class HangarView extends \mf\view\AbstractView
                                         </div>
                                         <div>
                                             <p>$produit->nom <br>$produit->tarif_unitaire €</p>
-                                            <p>" . $produit->producteur->nom . "</p>
+                                            <p><span>" . $produit->producteur->nom . "</span></p>
                                         </div>
                                     </a>
                                     <div>
@@ -296,7 +303,7 @@ class HangarView extends \mf\view\AbstractView
             $html ="<section>
                     <div>
                         <div>
-                        <img src='https://www.tutorialspoint.com/assets/profiles/13558/profile/60_76068-1512713229.jpg'>
+                        <img src='$http_req->root/html/img/photo/$res->photo'>
                         </div>
                     </div>
                     <div>
@@ -307,7 +314,7 @@ class HangarView extends \mf\view\AbstractView
                         ";
             $products = $res->produits;
             foreach($products as $p) {
-                $html .="<li> <img src='$http_req->root/html/img/$p->img'</li>";
+                $html .="<li> <img src='$http_req->root/html/img/product/$p->img'</li>";
             }
                          $html .="</ul></p>
                     </div>
