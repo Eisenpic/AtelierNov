@@ -215,13 +215,13 @@ class HangarView extends \mf\view\AbstractView
     private function renderConfirm()
     {
         $html = "
-            <div>
-
-                <h1>Votre commande a bien été enregistrée.</h1>
+        <section>
+                <h1>Votre commande a bien été enregistrée !</h1>
                 <h2>Informations personnels</h2>
-                <p>Nom: ". $_SESSION['commande']['client']['nom'] ."</p>
-                <p>Email: ". $_SESSION['commande']['client']['email'] ."</p>
-                <p>Telephone: ". $_SESSION['commande']['client']['telephone'] ."</p>
+            <div>
+                <p><span>Nom: </span>". $_SESSION['commande']['client']['nom'] ."</p>
+                <p><span>Email: </span>". $_SESSION['commande']['client']['email'] ."</p>
+                <p><span>Telephone: </span>". $_SESSION['commande']['client']['telephone'] ."</p>
             </div>";
 
         $html .= "<h2>Produits dans la commande</h2>";
@@ -229,14 +229,18 @@ class HangarView extends \mf\view\AbstractView
         $compteur = 1;
         foreach ($_SESSION['commande']['panier'] as $item){
             $html .= "
-               <h3>Produit $compteur</h3>
-               <p>Nom: ". $item['produit']['nom'] ."</p>
-               <p>Quantité: ". $item['quantite'] ."</p>
-               <p>Producteur: ". $item['produit']['producteur']['nom'] ."</p>
-               <p>Prix du lot: ". $item['prixLot'] ." €</p>
+                <div>
+                   <h3>Produit $compteur</h3>
+                   <p><span>Nom: </span>". $item['produit']['nom'] ."</p>
+                   <p><span>Quantité: </span>". $item['quantite'] ."</p>
+                   <p><span>Producteur: </span>". $item['produit']['producteur']['nom'] ."</p>
+                   <p><span>Prix du lot: </span>". $item['prixLot'] ." €</p>
+                </div>
             ";
             $compteur++;
         }
+
+        $html .= "</section>";
         return $html;
     }
 
