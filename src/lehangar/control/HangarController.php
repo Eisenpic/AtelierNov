@@ -41,7 +41,7 @@ class HangarController extends AbstractController
 
     }
 
-    public function viewDetailProducteur(){
+    public function viewProducteur(){
         $res = Producteur::where('id','=',$_GET['id'])->first();
         $view = new HangarView($res);
         $view->addStyleSheet('/html/css/detailproducteur.css');
