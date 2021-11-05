@@ -125,7 +125,7 @@ class HangarView extends \mf\view\AbstractView
         $r = new Router();
         $html = "
             <section>
-                <h2>Votre panier 🛒:</h2>
+                <h2>Votre panier 🛒 :</h2>
                 <div>
                     <div> <!-- div avec overflow: scroll -->
                         ";
@@ -136,15 +136,18 @@ class HangarView extends \mf\view\AbstractView
                         $html .= "
                             <div>
                                 <div>
-                                    <p>Quantité: ". $article['quantite'] ."</p>
+                                    <p>Quantité:</p>
+                                    <div>
+                                        ". $article['quantite'] ."
+                                    </div>
                                 </div>
                                 <div>
-                                    <p>Produit : ". $article['produit']->nom ."</p>
-                                    <p>Prix : ".$article['produit']->tarif_unitaire."</p>
-                                    <p>Producteur : ".$article['produit']->producteur->nom."</p>
+                                    <p><span>Produit : </span>". $article['produit']->nom ."</p>
+                                    <p><span>Prix : </span>".$article['produit']->tarif_unitaire." €</p>
+                                    <p><span>Producteur : </span>".$article['produit']->producteur->nom."</p>
                                 </div>
                                 <div>
-                                    <p>Total: ". $article['prixLot'] ."</p>
+                                    <p><span>Total: </span>". $article['prixLot'] ." €</p>
                                     <a href='". $r->urlFor('supprPanier', ['id' => $key]) ."'>Supprimer</a>
                                 </div>
                             </div>
@@ -158,7 +161,7 @@ class HangarView extends \mf\view\AbstractView
 
                     if (!empty($_SESSION['cart'])) {
                         $html .= "<div>
-                            <p>Total: $prixTotal €</p>
+                            <p><span>Total: </span>$prixTotal €</p>
                             <a href=../coord/>Valider</a>
                         </div>";
                     } else {
@@ -181,7 +184,7 @@ class HangarView extends \mf\view\AbstractView
                             <form action='../sendCoord/' method='post'>
                                     Nom :<input type='text' name='nom' required>
                                     <br />
-                                    Téléphone :<input type='number' name='tel' required>
+                                    Tel :<input type='number' name='tel' required>
                                     <br />
                                     Mail :<input type='email' name='email' required>
                                     <br />
