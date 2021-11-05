@@ -1,0 +1,5 @@
+config.ini
+.idea/
+vendor/
+composer.json
+composer.lock
