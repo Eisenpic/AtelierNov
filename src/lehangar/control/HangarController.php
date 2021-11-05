@@ -64,35 +64,34 @@ class HangarController extends AbstractController
         $produit = $_POST['produit'];
         $produit = Produit::select()->where("id", "=", $produit)->first();
         $prixLot = $produit->tarif_unitaire * $quantite;
-
-        //si le panier n'est pas vide on vérifie que le produit qui va s'ajouter n'est pas déjà présent
-        if (!empty($_SESSION['cart'])) {
-            $compteur = 0;
-            for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-                //si on trouve un item avec le même id on donne à la variable compteur le n° de l'item dans le panier +1
-                //pour ne pas qu'il soit à 0 qui correspond au fait que le produit n'est pas dans le panier
-                if ($_SESSION['cart'][$i]['produit']['id'] == $produit['id']) {
-                    $compteur = $i+1;
+        if($quantite != 0) {
+            //si le panier n'est pas vide on vérifie que le produit qui va s'ajouter n'est pas déjà présent
+            if (!empty($_SESSION['cart'])) {
+                $compteur = 0;
+                for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+                    //si on trouve un item avec le même id on donne à la variable compteur le n° de l'item dans le panier +1
+                    //pour ne pas qu'il soit à 0 qui correspond au fait que le produit n'est pas dans le panier
+                    if ($_SESSION['cart'][$i]['produit']['id'] == $produit['id']) {
+                        $compteur = $i + 1;
+                    }
                 }
-            }
 
-            //si 0 le produit n'est pas dans le panier on l'ajoute
-            if ($compteur == 0) {
-                array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
-                header('Location: ../accueil/');
+                //si 0 le produit n'est pas dans le panier on l'ajoute
+                if ($compteur == 0) {
+                    array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
 
-            //sinon on récupère sa place dans le tableau panier grâce au compteur et on augmente la quantite et le prix du lot
+                    //sinon on récupère sa place dans le tableau panier grâce au compteur et on augmente la quantite et le prix du lot
+                } else {
+                    $_SESSION['cart'][$compteur - 1]['quantite'] += $quantite;
+                    $_SESSION['cart'][$compteur - 1]['prixLot'] += $prixLot;
+                }
+
+                //sinon si le panier est vide on ajoute simplement sans vérifier
             } else {
-                $_SESSION['cart'][$compteur-1]['quantite'] += $quantite;
-                $_SESSION['cart'][$compteur-1]['prixLot'] += $prixLot;
-                header('Location: ../accueil/');
+                array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
             }
-
-        //sinon si le panier est vide on ajoute simplement sans vérifier
-        } else {
-            array_push($_SESSION['cart'], ['produit' => $produit, 'quantite' => $quantite, 'prixLot' => $prixLot]);
-            header('Location: ../accueil/');
         }
+        header('Location: ../accueil/');
     }
 
     //affiche le formulaire qui permet de finaliser une commande
