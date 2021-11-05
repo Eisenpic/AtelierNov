@@ -220,7 +220,7 @@ class HangarView extends \mf\view\AbstractView
         $html = "
         <section>
                 <h1>Votre commande a bien été enregistrée !</h1>
-                <h2>Informations personnels</h2>
+                <h2>Informations personnelles</h2>
             <div>
                 <p><span>Nom: </span>". $_SESSION['commande']['client']['nom'] ."</p>
                 <p><span>Email: </span>". $_SESSION['commande']['client']['email'] ."</p>
