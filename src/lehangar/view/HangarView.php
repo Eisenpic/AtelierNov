@@ -57,7 +57,7 @@ class HangarView extends \mf\view\AbstractView
         $html = "<section>
                     <div>
                         <div>
-                        <img src='$http_req->root/html/img/". $this->data->img ."'>
+                        <img src='$http_req->root/html/img/product/". $this->data->img ."'>
                         </div>
                         <p>". $this->data->description ."</p>
                     </div>
