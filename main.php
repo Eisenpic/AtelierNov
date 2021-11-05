@@ -38,5 +38,6 @@ $r->addRoute('confirm', '/confirm/', '\lehangar\control\HangarController', 'view
 $r->addRoute('sendCoord', '/sendCoord/', '\lehangar\control\HangarController', 'sendCoord', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('view', '/view/', '\lehangar\control\HangarController', 'viewArticle', Authentification::ACCESS_LEVEL_NONE);
 $r->addRoute('supprPanier', '/supprPanier/', '\lehangar\control\HangarController', 'supprPanier', Authentification::ACCESS_LEVEL_NONE);
+$r->addRoute('viewproducteur', '/viewproducteur', '\lehangar\control\HangarController', 'viewDetailProducteur', Authentification::ACCESS_LEVEL_NONE);
 $r->setDefaultRoute('/accueil/');
 $r->run();

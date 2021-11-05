@@ -23,7 +23,7 @@ class HangarView extends \mf\view\AbstractView
          */
         $html = $this->renderHeader();
 
-        switch ($selector){
+        switch ($selector) {
             case 'producteur':
                 $html .= $this->renderProducteur();
                 break;
@@ -42,11 +42,23 @@ class HangarView extends \mf\view\AbstractView
             case 'view';
                 $html .= $this->renderView();
                 break;
+            case 'viewproducteur':
+                $html .= $this->renderViewProducteur();
+                break;
         }
 
         $html .= $this->renderFooter();
         return $html;
     }
+
+    private function renderView()
+    {
+        $res = $this->data;
+        $categorie = Categorie::where('id', '=', $res->categorie_id)->first();
+        $producteur = Producteur::where('id', 'like', $res->prod_id)->first();
+        $http_req = new HttpRequest();
+        $r = new Router();
+        foreach ($this->data as $produit) {
 
     private function renderView(){
         $http_req = new HttpRequest();
@@ -58,10 +70,11 @@ class HangarView extends \mf\view\AbstractView
                         <p>". $this->data->description ."</p>
                     </div>
                     <div>
-                        <p>Produit : ". $this->data->nom ."</p>
-                        <p>Type : " . $this->data->categorie->nom ."</p>
-                        <p>Prix : ". $this->data->tarif_unitaire ."</p>
-                        <p>Producteur : " . $this->data->producteur->nom ."</p>
+
+                        <p>Produit : $res->nom</p>
+                        <p>Type : $categorie->nom</p>
+                        <p>Prix : $res->tarif_unitaire</p>
+                        <p>Producteur : <a href=" . $r->urlFor('viewproducteur', ['id' => $producteur->id]) . "> $producteur->nom</a></p>
                     </div>
 
                     <div>
@@ -81,6 +94,7 @@ class HangarView extends \mf\view\AbstractView
                  </section>";
             return $html;
     }
+
 
     private function renderProducteur(){
         $http_req = new HttpRequest();
@@ -105,8 +119,9 @@ class HangarView extends \mf\view\AbstractView
 
         return $html;
     }
-    
-    protected function renderHeader(){
+
+    protected function renderHeader()
+    {
         $r = new Router();
         return "
             <header>
@@ -125,7 +140,8 @@ class HangarView extends \mf\view\AbstractView
         ";
     }
 
-    protected function renderCart(){
+    protected function renderCart()
+    {
         $prixTotal = 0;
         $r = new Router();
         $html = "
@@ -135,12 +151,13 @@ class HangarView extends \mf\view\AbstractView
                     <div> <!-- div avec overflow: scroll -->
                         ";
 
-                    foreach ($this->data as $key => $article){
-                        $prixTotal += $article['prixLot'];
+        foreach ($this->data as $key => $article) {
+            $prixTotal += $article['prixLot'];
 
-                        $html .= "
+            $html .= "
                             <div>
                                 <div>
+
                                     <p>Quantité:</p>
                                     <div>
                                         ". $article['quantite'] ."
@@ -157,10 +174,10 @@ class HangarView extends \mf\view\AbstractView
                                 </div>
                             </div>
                         ";
-                        }
+        }
 
 
-                        $html .= "
+        $html .= "
                     </div>
                     ";
 
@@ -180,6 +197,7 @@ class HangarView extends \mf\view\AbstractView
 
         return $html;
     }
+
 
     private function renderCoord(){
         if (!empty($_SESSION['cart'])) {
@@ -204,9 +222,11 @@ class HangarView extends \mf\view\AbstractView
         }
     }
 
-    private function renderConfirm(){
+    private function renderConfirm()
+    {
         $html = "
             <div>
+
                 <h1>Votre commande a bien été enregistrée.</h1>
                 <h2>Informations personnels</h2>
                 <p>Nom: ". $_SESSION['commande']['client']['nom'] ."</p>
@@ -229,8 +249,8 @@ class HangarView extends \mf\view\AbstractView
         }
         return $html;
     }
-  
-   private function renderProduit()
+
+    private function renderProduit()
     {
         $http_req = new HttpRequest();
         $html = "";
@@ -261,6 +281,7 @@ class HangarView extends \mf\view\AbstractView
                                                 <option value='0'> 0 </option>";
 
 
+
                     for ($i = 1; $i < 21; $i++) {
                         $html .= "<option value='$i'>$i</option>";
                     }
@@ -278,6 +299,32 @@ class HangarView extends \mf\view\AbstractView
         return $html;
     }
 
+    private function renderViewProducteur()
+    {
+            $res = $this->data;
+            $http_req = new HttpRequest();
+            $html ="<section>
+                    <div>
+                        <div>
+                        <img src='https://www.tutorialspoint.com/assets/profiles/13558/profile/60_76068-1512713229.jpg'>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Nom : $res->nom</p>
+                        <p>Localisation: $res->localisation</p>
+                        <p>Producteur : $res->mail</p>
+                        <p>Mes produits : <ul>
+                        ";
+            $products = $res->produits;
+            foreach($products as $p) {
+                $html .="<li> <img src='$http_req->root/html/img/$p->img'</li>";
+            }
+                         $html .="</ul></p>
+                    </div>
+                 </section>";
+
+            return $html;
+    }
 
     protected function renderFooter()
     {
