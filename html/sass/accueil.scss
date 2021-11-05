@@ -1,0 +1,115 @@
+@import '_reset';
+@import '_header';
+@import '_footer';
+
+body{
+  background-color: #90c418;
+}
+
+#categorieTitle{
+  width: 95%;
+  margin: 50px auto 10px;
+
+  h2{
+    color: white;
+    border-bottom: 2px solid white;
+    width: auto;
+    display: table;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 30px;
+  }
+}
+
+section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 38px;
+  grid-row-gap: 30px;
+  width: 95%;
+  margin: auto;
+  > div{
+    grid-column: 4 span;
+    background-color: white;
+    padding-bottom: 10px;
+    -webkit-box-shadow: 0px 0px 16px 5px rgba(0,0,0,0.21);
+    box-shadow: 0px 0px 16px 5px rgba(0,0,0,0.21);
+    a {
+      color: black;
+      text-decoration: none;
+      div:first-child{
+        width:100%;
+        height:250px;
+        display: flex;
+      }
+      img {
+        max-width:100%;
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+      }
+      
+      span {
+        font-weight: bold;
+      }
+
+      div:last-child{
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+    div:last-child{
+      display: flex;
+      justify-content: center;
+
+      form {
+        input[type="submit"] {
+          cursor: pointer;
+          border: none;
+          background:  white;
+          color: black;
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 3px black;
+
+        }
+    
+        input[type="submit"]:hover {
+          background: rgb(177, 174, 174);
+          color: black;
+          transition: background-color 0.3s ease-in-out;
+        }
+
+        select {
+          font-size: .9rem;
+          padding: 3px;
+          border-radius: 15px;
+      }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 850px){
+  section {
+    > div {
+      grid-column: 2 span;
+
+      &:nth-child(3n){
+        grid-column: 2 / 4;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1300px){
+  section {
+    > div {
+      grid-column: 1 span;
+
+      &:nth-child(3n){
+        grid-column: 1 span;
+      }
+    }
+  }
+}

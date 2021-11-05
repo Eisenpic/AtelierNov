@@ -1,0 +1,43 @@
+body {
+  font-family: Tahoma, sans-serif;
+}
+
+header {
+  display:flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  background-color: #90c418;
+  color: white;
+  padding: 0 1%;
+
+  h1 {
+    font-size: 25px;
+  }
+
+  nav{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+
+    a{
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+    }
+  }
+}
+
+@media screen and (min-width: 600px){
+  header{
+    flex-direction: row;
+
+    nav{
+      width: 300px;
+
+      a{
+        font-size: 20px;
+      }
+    }
+  }
+}
