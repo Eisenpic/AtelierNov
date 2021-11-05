@@ -387,11 +387,11 @@ section {
   width: 35%;
   margin: 50px auto;
 }
-section > h2 {
+section h2 {
   color: white;
 }
 section > div {
-  padding: 20px;
+  padding: 30px 20px;
   border-radius: 15px;
   font-size: 20px;
   background-color: white;
@@ -407,6 +407,7 @@ section form input, section form textarea {
   margin: 10px;
   background-color: lightgrey;
   border: none;
+  width: 50%;
 }
 section form input::-webkit-outer-spin-button,
 section form input::-webkit-inner-spin-button {
@@ -420,7 +421,7 @@ section form button[type=submit] {
   cursor: pointer;
   width: 50%;
   border: none;
-  background: #99cf1b;
+  background: #82ad1d;
   color: white;
   margin: auto;
   padding: 10px;
@@ -439,23 +440,34 @@ section form p {
 
 @media screen and (max-width: 966px) {
   section form p {
-    font-size: 15px; } }
+    font-size: 15px;
+  }
+}
 @media screen and (max-width: 800px) {
   section {
-    width: 50%; } }
+    width: 50%;
+  }
+}
 @media screen and (max-width: 720px) {
-  section form button[type="submit"] {
-    font-size: 15px; } }
+  section form button[type=submit] {
+    font-size: 15px;
+  }
+}
 @media screen and (max-width: 561px) {
   section {
     font-size: 10px;
-    width: 65%; }
-    section > div {
-      padding: 15px 5px; }
-    section form {
-      font-size: 15px; }
-      section form p {
-        font-size: 10px;
-        margin-top: 20px; } }
+    width: 65%;
+  }
+  section > div {
+    padding: 15px 5px;
+  }
+  section form {
+    font-size: 15px;
+  }
+  section form p {
+    font-size: 10px;
+    margin-top: 20px;
+  }
+}
 
 /*# sourceMappingURL=coord.css.map */

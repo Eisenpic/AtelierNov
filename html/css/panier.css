@@ -385,57 +385,119 @@ body {
 
 section {
   display: grid;
-  width: 35%;
-  margin: 50px auto;
+  width: 75%;
+  margin: 30px auto;
+}
+section span {
+  font-weight: bold;
+}
+section a {
+  text-decoration: none;
 }
 section > h2 {
   color: white;
+  text-align: center;
+  font-size: 30px;
 }
 section > div {
   padding: 20px;
   border-radius: 15px;
   font-size: 20px;
   background-color: white;
-  -webkit-box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.21);
-  box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.21);
 }
-section form {
-  text-align: center;
-  /*Delete arrows input type number*/
-  /* Firefox Delete arrows input type number*/
+section > div > div:first-child {
+  overflow: scroll;
+  height: 50vh;
 }
-section form input, section form textarea {
-  margin: 10px;
-  background-color: lightgrey;
-  border: none;
+section > div > div:first-child > div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0px 0px 5px black;
+  margin-bottom: 10px;
+  padding: 20px;
 }
-section form input::-webkit-outer-spin-button,
-section form input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-section form input[type=number] {
-  -moz-appearance: textfield;
-}
-section form button[type=submit] {
-  cursor: pointer;
-  width: 50%;
-  border: none;
-  background: #99cf1b;
-  color: white;
-  margin: auto;
+section > div > div:first-child > div div {
   padding: 10px;
-  font-size: 22px;
-  font-weight: bold;
-  border-radius: 20px;
 }
-section form button[type=submit]:hover {
+section > div > div:first-child > div div:first-child {
+  flex-basis: 15%;
+  text-align: center;
+}
+section > div > div:first-child > div div:first-child p {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+section > div > div:first-child > div > div:nth-child(2) {
+  flex-basis: 60%;
+  background-color: #caf5c8;
+  padding-left: 30px;
+}
+section > div > div:first-child > div div:nth-child(3) {
+  flex-basis: 25%;
+  text-align: center;
+}
+section > div > div:first-child > div div:nth-child(3) a {
+  color: black;
+  border-radius: 10px;
+  background-color: #ec3838;
+  padding: 5px;
+}
+section > div > div:nth-child(2) {
+  text-align: center;
+  font-size: 25px;
+}
+section > div > div:nth-child(2) a {
+  color: white;
+  font-weight: bold;
+  border-radius: 13px;
+  background-color: #82ad1d;
+  padding: 5px;
+  width: 40%;
+  display: inline-block;
+}
+section > div > div:nth-child(2) a:hover {
   background: #658912;
   color: white;
   transition: background-color 0.3s ease-in-out;
 }
-section form p {
-  margin-top: 50px;
+
+@media screen and (max-width: 800px) {
+  section > div {
+    font-size: 15px;
+  }
+  section > div div:nth-child(2) {
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 650px) {
+  section > div {
+    font-size: 12px;
+    padding: 5px;
+  }
+  section > div > div:first-child {
+    overflow: scroll;
+    height: 55vh;
+  }
+  section > div div:nth-child(2) {
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 530px) {
+  section {
+    width: 90%;
+  }
+  section > div {
+    font-size: 10px;
+    padding: 5px;
+  }
+  section > div > div:first-child {
+    overflow: scroll;
+    height: 55vh;
+  }
+  section > h2 {
+    font-size: 20px;
+  }
 }
 
 /*# sourceMappingURL=panier.css.map */
