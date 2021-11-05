@@ -3,6 +3,7 @@
 namespace lehangar\view;
 
 use lehangar\model\Categorie;
+use lehangar\model\Commande;
 use lehangar\model\Producteur;
 use mf\router\Router;
 use mf\utils\HttpRequest;
@@ -107,12 +108,14 @@ class HangarView extends \mf\view\AbstractView
                 <div>
                     <h1>LeHangar.local 🥕</h1>
                 </div>
+                
+                <!-- nav pc -->
                 <nav>
-
                     <a href=". $r->urlFor('accueil', []) .">Accueil</a>
                     <a href=". $r->urlFor('producteurs', []). ">Producteurs</a>
                     <a href=". $r->urlFor('panier', []). ">Panier</a>
                 </nav>
+                
             </header>
         ";
     }
@@ -196,10 +199,26 @@ class HangarView extends \mf\view\AbstractView
     private function renderConfirm(){
         $html = "
             <div>
-                <p>Votre commande a bien été enregistrée.</p>
-                <p>Vous allez être automatiquement redirigé vers l'accueil.</p>
-            </div>
-            ".header( 'Refresh:5; url=../accueil/', true, 303);
+                <h1>Votre commande a bien été enregistrée.</h1>
+                <h2>Informations personnels</h2>
+                <p>Nom: ". $_SESSION['commande']['client']['nom'] ."</p>
+                <p>Email: ". $_SESSION['commande']['client']['email'] ."</p>
+                <p>Telephone: ". $_SESSION['commande']['client']['telephone'] ."</p>
+            </div>";
+
+        $html .= "<h2>Produits dans la commande</h2>";
+
+        $compteur = 1;
+        foreach ($_SESSION['commande']['panier'] as $item){
+            $html .= "
+               <h3>Produit $compteur</h3>
+               <p>Nom: ". $item['produit']['nom'] ."</p>
+               <p>Quantité: ". $item['quantite'] ."</p>
+               <p>Producteur: ". $item['produit']['producteur']['nom'] ."</p>
+               <p>Prix du lot: ". $item['prixLot'] ." €</p>
+            ";
+            $compteur++;
+        }
         return $html;
     }
   
