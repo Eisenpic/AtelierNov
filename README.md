@@ -8,5 +8,5 @@
 
 # Installation
 
-Pour utiliser l'application vous devez réalisé l'installation de Eloquent via : 
+Pour utiliser l'application vous devez réaliser l'installation de Eloquent via : 
 `composer require illuminate/database`
